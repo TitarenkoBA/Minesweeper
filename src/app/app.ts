@@ -64,7 +64,7 @@ export class App implements OnDestroy {
 
   newGame(): void {
     this.gameID.set(null);
-    this.soundService.playSound('/assets/sounds/a9b9946fbabe4d0.mp3', this.volume);
+    this.soundService.playSound('./assets/sounds/a9b9946fbabe4d0.mp3', this.volume);
 
     this.moveCounter = 0;
     this.stopTimer();
@@ -120,7 +120,7 @@ export class App implements OnDestroy {
       return;
     }
 
-    this.soundService.playSound('/assets/sounds/877427.mp3', this.volume);
+    this.soundService.playSound('./assets/sounds/877427.mp3', this.volume);
     
     this.startTimer();
 
@@ -136,7 +136,7 @@ export class App implements OnDestroy {
       this.gameOver.set(true);
       this.recordGame('loss', cells);
 
-      this.soundService.playSound('/assets/sounds/1c7227d9b23f914.mp3', this.volume);
+      this.soundService.playSound('./assets/sounds/1c7227d9b23f914.mp3', this.volume);
       return;
     }
 
@@ -147,7 +147,7 @@ export class App implements OnDestroy {
       this.gameWon.set(true);
       this.recordGame('win', cells);
 
-      this.soundService.playSound('/assets/sounds/winn-cc.mp3', this.volume);
+      this.soundService.playSound('./assets/sounds/winn-cc.mp3', this.volume);
     }
   }
 
@@ -166,7 +166,7 @@ export class App implements OnDestroy {
       return;
     }
 
-    this.soundService.playSound('/assets/sounds/mouth-pop-finger.mp3', this.volume);
+    this.soundService.playSound('./assets/sounds/mouth-pop-finger.mp3', this.volume);
 
     this.moveCounter += 1;
 

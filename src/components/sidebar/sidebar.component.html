@@ -15,7 +15,7 @@
         class="control-button toc mx-auto" (click)="onNewGameClick()"
         [upCustomTooltip]="'Начать игру заново'"
       >
-        <img src="/assets/images/icons8-refresh.svg" alt="bomb" class="h-7.5 w-7.5" />
+        <img src="./assets/images/icons8-refresh.svg" alt="bomb" class="h-7.5 w-7.5" />
       </button>
 
       <button 
@@ -24,9 +24,9 @@
         [upCustomTooltip]="soundService.isSoundEnabled() ? 'Выключить звуковые эффекты' : 'Включить звуковые эффекты'"
       >
         @if (!soundService.isSoundEnabled()) {
-          <img src="/assets/images/speaker-low-volume.svg" alt="low-volume" class="h-7.5 w-7.5 grayscale-50" />
+          <img src="./assets/images/speaker-low-volume.svg" alt="low-volume" class="h-7.5 w-7.5 grayscale-50" />
         } @else {
-          <img src="/assets/images/speaker-high-volume.svg" alt="high-volume" class="h-7.5 w-7.5 grayscale-50" />
+          <img src="./assets/images/speaker-high-volume.svg" alt="high-volume" class="h-7.5 w-7.5 grayscale-50" />
         }
       </button>
 
@@ -35,7 +35,7 @@
         (click)="openSettings()"
         [upCustomTooltip]="'Открыть настройки'"
       >
-        <img src="/assets/images/icons8-settings.svg" alt="settings" class="h-7.5 w-7.5" />
+        <img src="./assets/images/icons8-settings.svg" alt="settings" class="h-7.5 w-7.5" />
       </button>
 
       @if (isRadioPlayed()) {
@@ -44,8 +44,8 @@
           (click)="stopRadio()"
           [upCustomTooltip]="'Выключить музыку'"
         >
-          <img src="/assets/images/stop-svgrepo-com.svg" alt="stop-radio" class="h-7.5 w-7.5" />
-            <img src="/assets/images/cb17b80a942d7c317a35ff1324fae12f.gif" alt="playing-radio" class="z-[1] w-[90%] absolute left-0.5 right-1 bottom-[-20%]" />
+          <img src="./assets/images/stop-svgrepo-com.svg" alt="stop-radio" class="h-7.5 w-7.5" />
+            <img src="./assets/images/cb17b80a942d7c317a35ff1324fae12f.gif" alt="playing-radio" class="z-[1] w-[90%] absolute left-0.5 right-1 bottom-[-20%]" />
         </button>
       } @else {
         <button 
@@ -53,7 +53,7 @@
           (click)="playRadio()"
           [upCustomTooltip]="'Включить музыку'"
         >
-          <img src="/assets/images/play-fill-svgrepo-com.svg" alt="paly-radio" class="h-7.5 w-7.5" />
+          <img src="./assets/images/play-fill-svgrepo-com.svg" alt="paly-radio" class="h-7.5 w-7.5" />
         </button>
       }
     </div>
@@ -147,7 +147,7 @@
               class="status status--won flex items-center toc p-4 animate-bounce-in"
               (upClickOutside)="onNewGameClick()"
             >
-              <img src="/assets/images/2336769_b9413.gif" alt="win" class="h-7.5 w-7.5 mr-2" />
+              <img src="./assets/images/2336769_b9413.gif" alt="win" class="h-7.5 w-7.5 mr-2" />
               Победа! 
               <br />
               Все мины найдены.
@@ -161,7 +161,7 @@
               class="status status--lost flex items-center toc p-4 animate-bounce-in"
               (upClickOutside)="onNewGameClick()"
             >
-              <img src="/assets/images/boom-cat.gif" alt="lose" class="h-7.5 w-7.5 mr-2" />
+              <img src="./assets/images/boom-cat.gif" alt="lose" class="h-7.5 w-7.5 mr-2" />
               Поражение. 
               <br />
               Вы подорвались на мине.
