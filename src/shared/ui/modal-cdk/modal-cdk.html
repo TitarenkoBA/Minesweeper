@@ -1,0 +1,50 @@
+<ng-template #modalTemplate>
+  <div
+    class="{{
+      needEmptyTemplate()
+        ? ''
+        : 'bg-block relative overflow-hidden m-0 h-full w-full max-w-full rounded-xl p-[0.125rem] shadow-[0_2px_4px_rgba(0,0,0,0.1)] outline-none lg:h-fit lg:w-[40.75rem]'
+    }} {{ animationClassName() }} {{ customClassName() }}"
+    tabindex="0"
+  >
+    @if (!needEmptyTemplate()) {
+      <div class="mb-6 flex min-h-[19px] items-center justify-between px-[0.625rem] pt-[0.625rem]">
+        <div class="flex items-center gap-1.5 text-base leading-[19px] font-medium text-white">
+          <ng-content select="[slot=title]" />
+        </div>
+        <button
+          class="bg-dark hover:bg-block transition-colors duration-200 z-[1] flex h-[18px] w-[18px] {{
+            !this.canBeClosed() ? '!cursor-default' : 'cursor-pointer'
+          }} items-center justify-center rounded-[15px] border-none text-white/40 {{ customCloseButtonClassName() }}"
+          (click)="!this.canBeClosed() ? '' : close()"
+          [disabled]="!this.canBeClosed()"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="11" viewBox="0 0 10 11" fill="none">
+            <g clip-path="url(#clip0_1_8976)">
+              <path
+                d="M9.98338 1.51328L8.9867 0.516602L4.99999 4.50331L1.01328 0.516602L0.0166016 1.51328L4.00331 5.49999L0.0166016 9.4867L1.01328 10.4834L4.99999 6.49667L8.9867 10.4834L9.98338 9.4867L5.99667 5.49999L9.98338 1.51328Z"
+                fill="white"
+                fill-opacity="0.4"
+              />
+            </g>
+            <defs>
+              <clipPath id="clip0_1_8976">
+                <rect width="9.96678" height="9.96678" fill="white" transform="translate(0.0166016 0.516602)" />
+              </clipPath>
+            </defs>
+          </svg>
+        </button>
+      </div>
+    }
+
+    <div
+      class="{{
+        needEmptyTemplate()
+          ? 'h-full w-full'
+          : 'scrollbar-thin max-h-[calc(100vh-60px)] overflow-x-auto overflow-x-hidden px-[0.625rem] pb-[0.625rem] lg:max-h-[calc(100vh-200px)]'
+      }}"
+    >
+      <ng-content />
+    </div>
+  </div>
+</ng-template>

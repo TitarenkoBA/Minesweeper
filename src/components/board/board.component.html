@@ -1,0 +1,36 @@
+<div class="container" [style.gridTemplateColumns]="'repeat(' + cols + ', var(--s))'">
+  @for (cell of cells; track cell.id) {
+    <div 
+      (click)="handleCellClick(cell)" 
+      (contextmenu)="handleCellRightClick($event, cell)"
+      [class.revealed]="cell.isRevealed" 
+      [class.mine]="cell.isRevealed && cell.isMine" 
+      [class.flagged]="cell.isFlagged"
+      class="relative {{gameID ? 'animate-bounce-in' : ''}}"
+    >
+      @if (cell.isRevealed && !cell.isMine && cell.adjacentMines > 0) {
+        <span>{{ cell.adjacentMines }}</span>
+      }
+      @if (cell.isRevealed && cell.isMine && !cell.isFlagged) {
+        <span>
+          @defer (on timer(2000ms)) {
+            <img src="/assets/images/black-bomb.svg" alt="bomb" class="h-7.5 w-7.5 animate-bounce-in" />
+          } @placeholder {
+          <img src="/assets/images/placidplace-explosion-14627_512.gif" alt="bomb"
+            class="absolute max-w-[10rem] -left-[3.5rem] bottom-0" />
+          }
+        </span>
+      }
+      @if (cell.isRevealed && cell.isMine && cell.isFlagged) {
+        <span>
+          <img src="/assets/images/black-bomb.svg" alt="bomb" class="h-7.5 w-7.5" />
+        </span>
+      }
+      @if (!cell.isRevealed && cell.isFlagged) {
+        <span>
+          <img src="/assets/images/nicubunu_Waving_white_flag.svg" alt="bomb" class="h-7.5 w-7.5" />
+        </span>
+      }
+    </div>
+  }
+</div>

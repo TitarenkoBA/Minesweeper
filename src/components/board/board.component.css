@@ -1,0 +1,65 @@
+.container {
+  --s: 2.5rem;
+  /* cell size  */
+  --g: 0.3125rem;
+  /* gap */
+
+  display: grid;
+  justify-content: center;
+  gap: var(--g);
+  padding: 1rem;
+
+  background-image: none;
+  background-color: #3a3a3a50;
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.8);
+  border-color: #444444;
+  border-radius: 15px;
+}
+
+.container div {
+  cursor: pointer;
+  display: grid;
+  place-content: center;
+  border: 2px solid #262626;
+  box-sizing: border-box;
+  font: bold 20px system-ui, sans-serif;
+
+  background-color: #262626;
+  background-position: top 0 center;
+  background-repeat: no-repeat;
+  background-image: 
+    radial-gradient(50% 50% at top center, rgba(0, 0, 0, 0.66), #26262690),
+    linear-gradient(180deg, #fff, #26262650);
+  box-shadow: 0 -8px 15px rgba(0, 0, 0, 0.35);
+
+  transition: all 200ms;
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+  color: #f3f3f3;
+}
+
+.container div:active {
+  transform: translateY(1px);
+  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.7);
+}
+
+.container div.revealed {
+  background-image: none;
+  background-color: #3a3a3a;
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.8);
+  border-color: #444444;
+}
+
+.container div.revealed.mine {
+  background-color: #7a1111;
+  border-color: #ff4444;
+}
+
+.container div.revealed.flagged {
+  background-color: #027c16;
+  border-color: #02e921;
+}
+
+.container div.flagged:not(.revealed) {
+  color: #f1d94b;
+}

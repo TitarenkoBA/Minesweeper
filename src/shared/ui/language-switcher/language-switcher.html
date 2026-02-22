@@ -1,0 +1,64 @@
+@let langs = languages();
+@let selected = locale();
+
+<div class="relative">
+  <button
+    type="button"
+    class="flex cursor-pointer flex-wrap items-center gap-1"
+    (click)="toggleDropdown()"
+    aria-haspopup="menu"
+    [attr.aria-expanded]="dropdownOpen()"
+    aria-label="Language selection"
+  >
+    
+    <img
+      [src]="langs | findByKey: { searchValue: selected, searchKey: 'code', displayKey: 'flag' }"
+      alt="flag"
+      class="h-[0.75rem] w-[1.125rem] lg:h-[1.0625rem] lg:w-[1.625rem]"
+    />
+    <span class="text-footer-mobile text-gray font-bold lg:text-base lg:text-white">
+      {{
+        langs
+          | findByKey
+            : {
+                searchValue: selected,
+                searchKey: "code",
+                displayKey: "label",
+              }
+      }}
+    </span>
+    <img
+      src="/assets/images/header/arrow-down.svg"
+      alt="arrow-down"
+      class="ml-1 h-[0.375rem] w-[0.6875rem] transition-transform duration-300"
+      [class.rotate-180]="dropdownOpen()"
+    />
+  </button>
+
+  @if (dropdownOpen()) {
+    <div
+      class="animate-scaleIn bg-header absolute -left-3 z-10 min-w-25 rounded-[0.125rem] shadow-[0px_3px_6px_-4px_rgba(0,0,0,0.12),0px_6px_16px_0px_rgba(0,0,0,0.08),0px_9px_28px_8px_rgba(0,0,0,0.05)]"
+      [ngClass]="{
+        'mt-2': direction() === 'down',
+        '-top-15': direction() === 'up',
+      }"
+      (upClickOutside)="dropdownOpen.set(false)"
+    >
+      <div class="flex flex-col py-1">
+        @for (lang of langs; track lang.code) {
+          <button
+            class="hover:bg-border-secondary flex cursor-pointer items-center gap-1 px-[0.75rem] py-[0.3125rem]"
+            [class.bg-border-secondary]="selected === lang.code"
+            (click)="select(lang.code)"
+          >
+            
+            <img [src]="lang.flag" alt="flag" class="h-[0.75rem] w-[1.125rem] lg:h-[1.0625rem] lg:w-[1.625rem]" />
+            <span class="text-xxs text-gray lg:text-sm" [class.text-white]="selected === lang.code">
+              {{ lang.label }}</span
+            >
+          </button>
+        }
+      </div>
+    </div>
+  }
+</div>

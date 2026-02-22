@@ -1,3 +1,74 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "tailwindcss";
+
+.engraved-text {
+    color: #555; /* Цвет текста чуть темнее фона */
+    background-color: #eee; /* Светлый фон */
+    text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.8), /* Светлая тень снизу */
+                    -1px -1px 1px rgba(0, 0, 0, 0.4); /* Темная тень сверху */
+}
+
+.inner-light-shadow {
+    background-color: #b9b9b9;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0px 0px 0px rgba(255,255,255,0.3) ;
+}
+
+@keyframes bounceIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.3) translateY(-40px);
+    }
+    30% {
+      opacity: 1;
+      transform: scale(1.1) translateY(-8px);
+    }
+    60% {
+      transform: scale(0.95) translateY(-2px);
+    }
+    80% {
+      transform: scale(1.02) translateY(0px);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+  
+  .animate-bounce-in {
+    position: relative;
+    animation: bounceIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    transform-origin: center;
+    z-index: 10;
+    will-change: transform, opacity;
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.8) translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+  
+  @keyframes scaleOut {
+    from {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: scale(0.8) translateY(20px);
+    }
+  }
+  
+  .animate-scaleIn {
+    animation: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
