@@ -1,12 +1,12 @@
-<div class="container" [style.gridTemplateColumns]="'repeat(' + cols + ', var(--s))'">
-  @for (cell of cells; track cell.id) {
+<div class="mines-container" [style.gridTemplateColumns]="'repeat(' + gameService.cols + ', var(--s))'">
+  @for (cell of gameService.cells(); track cell.id) {
     <div 
       (click)="handleCellClick(cell)" 
       (contextmenu)="handleCellRightClick($event, cell)"
       [class.revealed]="cell.isRevealed" 
       [class.mine]="cell.isRevealed && cell.isMine" 
       [class.flagged]="cell.isFlagged"
-      class="relative {{gameID ? 'animate-bounce-in' : ''}}"
+      class="relative {{gameService.gameID() ? 'animate-bounce-in' : ''}}"
     >
       @if (cell.isRevealed && !cell.isMine && cell.adjacentMines > 0) {
         <span>{{ cell.adjacentMines }}</span>

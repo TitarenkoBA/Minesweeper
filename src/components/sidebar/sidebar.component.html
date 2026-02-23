@@ -1,4 +1,4 @@
-<div id="sticky-sidebar-container" class="w-full lg:min-w-[20rem]  flex flex-col lg:items-start items-center lg:block justify-center ">
+<div id="sticky-sidebar-container" class="w-full lg:min-w-[20rem] flex flex-col lg:items-start items-center lg:block justify-center">
   <div class="flex flex-col w-full items-center">
     <div class="toc min-h-[5rem] flex items-center justify-center uppercase text-[2rem] px-5 engraved-text">
       Minesweeper
@@ -15,7 +15,7 @@
         class="control-button toc mx-auto" (click)="onNewGameClick()"
         [upCustomTooltip]="'Начать игру заново'"
       >
-        <img src="./assets/images/icons8-refresh.svg" alt="bomb" class="h-7.5 w-7.5" />
+        <img src="./assets/images/icons8-refresh.svg" alt="bomb" class="w-[2rem]" />
       </button>
 
       <button 
@@ -24,18 +24,18 @@
         [upCustomTooltip]="soundService.isSoundEnabled() ? 'Выключить звуковые эффекты' : 'Включить звуковые эффекты'"
       >
         @if (!soundService.isSoundEnabled()) {
-          <img src="./assets/images/speaker-low-volume.svg" alt="low-volume" class="h-7.5 w-7.5 grayscale-50" />
+          <img src="./assets/images/speaker-low-volume.svg" alt="low-volume" class="w-[2rem] grayscale-50" />
         } @else {
-          <img src="./assets/images/speaker-high-volume.svg" alt="high-volume" class="h-7.5 w-7.5 grayscale-50" />
+          <img src="./assets/images/speaker-high-volume.svg" alt="high-volume" class="w-[2rem] grayscale-50" />
         }
       </button>
 
       <button 
-        class="control-button toc mx-auto {{isSettingsOpen() ? 'opacity-50' : ''}}" 
-        (click)="openSettings()"
+        class="control-button toc mx-auto {{gameService.isSettingsOpen() ? 'opacity-50' : ''}}" 
+        (click)="gameService.openSettings()"
         [upCustomTooltip]="'Открыть настройки'"
       >
-        <img src="./assets/images/icons8-settings.svg" alt="settings" class="h-7.5 w-7.5" />
+        <img src="./assets/images/icons8-settings.svg" alt="settings" class="w-[2rem]" />
       </button>
 
       @if (isRadioPlayed()) {
@@ -44,8 +44,8 @@
           (click)="stopRadio()"
           [upCustomTooltip]="'Выключить музыку'"
         >
-          <img src="./assets/images/stop-svgrepo-com.svg" alt="stop-radio" class="h-7.5 w-7.5" />
-            <img src="./assets/images/cb17b80a942d7c317a35ff1324fae12f.gif" alt="playing-radio" class="z-[1] w-[90%] absolute left-0.5 right-1 bottom-[-20%]" />
+          <img src="./assets/images/stop-svgrepo-com.svg" alt="stop-radio" class="w-[2rem]" />
+          <img src="./assets/images/cb17b80a942d7c317a35ff1324fae12f.gif" alt="playing-radio" class="z-[1] w-[90%] absolute lg:left-0.5 left-1 right-1 lg:bottom-[-40%] bottom-[-25%]" />
         </button>
       } @else {
         <button 
@@ -53,123 +53,22 @@
           (click)="playRadio()"
           [upCustomTooltip]="'Включить музыку'"
         >
-          <img src="./assets/images/play-fill-svgrepo-com.svg" alt="paly-radio" class="h-7.5 w-7.5" />
+          <img src="./assets/images/play-fill-svgrepo-com.svg" alt="paly-radio" class="w-[2rem]" />
         </button>
       }
     </div>
   </div>
-  <div id="all-modules">
-    <div class="absolute min-w-[20rem] left-0 top-[50%] {{isSettingsOpen() ? '' : 'hidden'}}">
-      <div 
-        class="settings toc p-4 animate-bounce-in {{isSettingsOpen() ? '' : 'hidden'}}"
-        (upClickOutside)="isSettingsOpen() ? closeSettings() : undefined"
-      >
-        <h3 class="settings__title inner-light-shadow">
-          Настройки
-        </h3>
-        <div class="settings__row">
-          <div class="settings__label inner-light-shadow">
-            Строк: <span class="settings__value">{{ rows }}</span>
-          </div>
-          <input
-            type="range"
-            min="2"
-            max="20"
-            [value]="rows"
-            (input)="onRowsChange($event)"
-          />
-        </div>
-        <div class="settings__row">
-          <div class="settings__label inner-light-shadow">
-            Колонок: <span class="settings__value">{{ cols }}</span>
-          </div>
-          <input
-            type="range"
-            min="2"
-            max="20"
-            [value]="cols"
-            (input)="onColsChange($event)"
-          />
-        </div>
-        <div class="settings__row">
-          <div class="settings__label inner-light-shadow">
-            Мин: <span class="settings__value">{{ mines }}</span>
-          </div>
-          <input
-            type="range"
-            min="1"
-            [value]="mines"
-            (input)="onMinesChange($event)"
-          />
-        </div>
-        <div class="settings__row">
-          <div class="settings__label inner-light-shadow">
-            Громкость эффектов
-          </div>
-          <input
-            type="range"
-            min="1"
-            [value]="volume"
-            (input)="onVolumeChange($event)"
-          />
-        </div>
-        <div class="settings__row">
-          <div class="settings__label inner-light-shadow">
-            Громкость музыки
-          </div>
-          <input
-            type="range"
-            min="1"
-            [value]="musicVolume"
-            (input)="onMusicVolumeChange($event)"
-          />
-        </div>
+  <div id="sticky-sidebar-stuff">
+    <div class="w-full toc p-4 inner-light-shadow">
+      <div class="status-line flex items-center ">
+        Мины всего: {{ gameService.totalMines }} 
+      </div>
+      <div class="status-line">
+        Поставлено флагов: {{ gameService.flagsCount() }}
+      </div>
+      <div class="status-line">
+        Предполагаемых мин без флагов: {{ gameService.remainingMines() }}
       </div>
     </div>
-
-    <div id="sticky-sidebar-stuff">
-      <div class="w-full toc p-4 inner-light-shadow">
-        <div class="status-line flex items-center ">
-          Мины всего: {{ totalMines }} 
-        </div>
-        <div class="status-line">
-          Поставлено флагов: {{ flagsCount }}
-        </div>
-        <div class="status-line">
-          Предполагаемых мин без флагов: {{ remainingMines }}
-        </div>
-      </div>
-
-      
-        @if (gameWon) {
-          <div class="absolute min-w-[20rem] left-0 top-0 {{gameWon ? '' : 'hidden'}}">
-            <div 
-              class="status status--won flex items-center toc p-4 animate-bounce-in"
-              (upClickOutside)="onNewGameClick()"
-            >
-              <img src="./assets/images/2336769_b9413.gif" alt="win" class="h-7.5 w-7.5 mr-2" />
-              Победа! 
-              <br />
-              Все мины найдены.
-            </div>
-          </div>
-        }
-  
-        @if (gameOver && !gameWon) {
-          <div class="absolute min-w-[20rem] left-0 top-0 {{gameOver && !gameWon ? '' : 'hidden'}}">
-            <div 
-              class="status status--lost flex items-center toc p-4 animate-bounce-in"
-              (upClickOutside)="onNewGameClick()"
-            >
-              <img src="./assets/images/boom-cat.gif" alt="lose" class="h-7.5 w-7.5 mr-2" />
-              Поражение. 
-              <br />
-              Вы подорвались на мине.
-            </div>
-          </div>
-        }
-    </div>
-    
-    <div id="carbon-placement"></div>
   </div>
 </div>

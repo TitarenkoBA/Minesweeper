@@ -1,28 +1,104 @@
-<main class="main w-full lg:min-w-[100vw] h-full lg:min-h-[100vh] flex items-start justify-center flex-1 lg:p-10 p-5 relative">
-  <div class="content flex flex-col-reverse lg:flex-row items-start justify-center gap-20 lg:max-w-[1440px] w-full">
-    <app-board
-      [gameID]="gameID()"
-      [cells]="cells()"
-      [cols]="cols"
-      (cellClick)="onCellClick($event)"
-      (cellRightClick)="onCellRightClick($event.event, $event.cell)"
-    ></app-board>
-    <app-sidebar
-      class="w-full lg:w-[20rem]"
-      [rows]="rows"
-      [cols]="cols"
-      [volume]="volume"
-      [musicVolume]="musicVolume"
-      [mines]="totalMines"
-      [totalMines]="totalMines"
-      [flagsCount]="flagsCount()"
-      [remainingMines]="remainingMines()"
-      [gameOver]="gameOver()"
-      [gameWon]="gameWon()"
-      [durationSeconds]="gameDurationSeconds()"
-      (newGame)="newGame()"
-      (settingsChange)="onSettingsChange($event)"
-    ></app-sidebar>
+<main class="main w-full lg:min-w-[100vw] min-h-full h-fit lg:min-h-[100vh] flex items-start justify-center flex-1 lg:p-10 p-5">
+  <div class="content flex flex-col-reverse lg:flex-row justify-center lg:gap-20 lg:max-w-[1440px] w-full relative">
+    <mines-board class="flex flex-col items-center justify-center" />
+
+    <mines-sidebar class="w-full lg:w-[20rem]" />
+
+    <div class="absolute lg:w-[20rem] w-full {{gameService.isSettingsOpen() ? '' : 'hidden'}}">
+      <div 
+        class="settings toc p-4 animate-bounce-in {{gameService.isSettingsOpen() ? '' : 'hidden'}}"
+        (upClickOutside)="gameService.isSettingsOpen() ? gameService.closeSettings() : undefined"
+      >
+        <h3 class="settings__title inner-light-shadow">
+          Настройки
+        </h3>
+        <div class="settings__row">
+          <div class="settings__label inner-light-shadow">
+            Строк: <span class="settings__value">{{ gameService.rows }}</span>
+          </div>
+          <input
+            type="range"
+            min="2"
+            max="20"
+            [value]="gameService.rows"
+            (input)="onRowsChange($event)"
+          />
+        </div>
+        <div class="settings__row">
+          <div class="settings__label inner-light-shadow">
+            Колонок: <span class="settings__value">{{ gameService.cols }}</span>
+          </div>
+          <input
+            type="range"
+            min="2"
+            max="20"
+            [value]="gameService.cols"
+            (input)="onColsChange($event)"
+          />
+        </div>
+        <div class="settings__row">
+          <div class="settings__label inner-light-shadow">
+            Мин: <span class="settings__value">{{ gameService.totalMines }}</span>
+          </div>
+          <input
+            type="range"
+            min="1"
+            [value]="gameService.totalMines"
+            (input)="onMinesChange($event)"
+          />
+        </div>
+        <div class="settings__row">
+          <div class="settings__label inner-light-shadow">
+            Громкость эффектов
+          </div>
+          <input
+            type="range"
+            min="1"
+            [value]="gameService.volume"
+            (input)="onVolumeChange($event)"
+          />
+        </div>
+        <div class="settings__row">
+          <div class="settings__label inner-light-shadow">
+            Громкость музыки
+          </div>
+          <input
+            type="range"
+            min="1"
+            [value]="gameService.musicVolume"
+            (input)="onMusicVolumeChange($event)"
+          />
+        </div>
+      </div>
+    </div>
+
+    @if (gameService.gameWon()) {
+      <div class="absolute lg:w-[20rem] w-full {{gameService.gameWon() ? '' : 'hidden'}}">
+        <div 
+          class="status status--won flex items-center toc p-4 animate-bounce-in"
+          (upClickOutside)="gameService.newGame()"
+        >
+          <img src="./assets/images/2336769_b9413.gif" alt="win" class="h-7.5 w-7.5 mr-2" />
+          Победа! 
+          <br />
+          Все мины найдены.
+        </div>
+      </div>
+    }
+
+    @if (gameService.gameOver() && !gameService.gameWon()) {
+      <div class="absolute lg:w-[20rem] w-full {{gameService.gameOver() && !gameService.gameWon() ? '' : 'hidden'}}">
+        <div 
+          class="status status--lost flex items-center toc p-4 animate-bounce-in"
+          (upClickOutside)="gameService.newGame()"
+        >
+          <img src="./assets/images/boom-cat.gif" alt="lose" class="h-7.5 w-7.5 mr-2" />
+          Поражение. 
+          <br />
+          Вы подорвались на мине.
+        </div>
+      </div>
+    }
   </div>
 </main>
 <router-outlet />

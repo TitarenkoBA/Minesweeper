@@ -1,27 +1,23 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { Cell } from '../../models/cell.model';
+import { GameService } from '@shared/services/game.service';
 
 @Component({
-  selector: 'app-board',
+  selector: 'mines-board',
   standalone: true,
   templateUrl: './board.component.html',
   styleUrl: './board.component.css',
 })
 export class BoardComponent {
-  @Input() cells: Cell[] = [];
-  @Input() cols = 0;
-  @Input() gameID: string | null = '';
-
-  @Output() cellClick = new EventEmitter<Cell>();
-  @Output() cellRightClick = new EventEmitter<{ event: MouseEvent; cell: Cell }>();
+  public readonly gameService = inject(GameService);
 
   handleCellClick(cell: Cell): void {
-    this.cellClick.emit(cell);
+    this.gameService.onCellClick(cell);
   }
 
   handleCellRightClick(event: MouseEvent, cell: Cell): void {
     event.preventDefault();
-    this.cellRightClick.emit({ event, cell });
+    this.gameService.onCellRightClick(event, cell);
   }
 }
 
