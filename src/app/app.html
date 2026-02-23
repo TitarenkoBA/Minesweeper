@@ -75,7 +75,7 @@
     @if (gameService.gameWon()) {
       <div class="absolute lg:w-[20rem] w-full {{gameService.gameWon() ? '' : 'hidden'}}">
         <div 
-          class="status status--won flex items-centertoc p-4 animate-bounce-in"
+          class="status status--won flex items-center toc p-4 animate-bounce-in"
           (upClickOutside)="gameService.newGame()"
         >
           <img src="./assets/images/2336769_b9413.gif" alt="win" class="h-7.5 w-7.5 mr-2" />
