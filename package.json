@@ -1,13 +1,18 @@
 {
   "name": "minesweeper",
-  "version": "0.0.0",
+  "displayName": "Minesweeper",
+  "version": "1.0.0",
+  "description": "Minesweeper is a timeless puzzle and strategy game where your goal is to clear a grid of hidden mines without detonating any.",
+  "main": "index.js",
+  "author": "Boris Titarenko",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build --base-href /Minesweeper/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "deploy": "npm run build && gh-pages -d dist/minesweeper/browser"
+    "deploy": "npm run build && gh-pages -d dist/minesweeper/browser",
+    "build-android": "ng build --output-path www && cordova build android"
   },
   "prettier": {
     "printWidth": 100,
@@ -39,11 +44,24 @@
     "@angular/cli": "^21.0.0",
     "@angular/compiler-cli": "^21.0.0",
     "@tailwindcss/postcss": "^4.1.12",
+    "cordova-android": "^14.0.1",
+    "cordova-plugin-device": "^3.0.0",
     "gh-pages": "^6.3.0",
     "jsdom": "^27.1.0",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.1.12",
     "typescript": "~5.9.2",
     "vitest": "^4.0.8"
+  },
+  "keywords": [
+    "ecosystem:cordova"
+  ],
+  "cordova": {
+    "platforms": [
+      "android"
+    ],
+    "plugins": {
+      "cordova-plugin-device": {}
+    }
   }
 }

@@ -89,30 +89,33 @@ export class GameService {
     setTimeout(() => this.gameID.set(uniqId()));
   }
 
-  onSettingsChange(settings: GameSettings): void {
-    const nextRows = Number.isFinite(settings.rows) ? Math.floor(settings.rows) : this.rows;
-    const nextCols = Number.isFinite(settings.cols) ? Math.floor(settings.cols) : this.cols;
-    let rows = Math.min(Math.max(nextRows, 2), 20);
-    let cols = Math.min(Math.max(nextCols, 2), 20);
-
-    const maxMines = rows * cols - 1;
-    const rawMines = Number.isFinite(settings.mines) ? Math.floor(settings.mines) : this.totalMines;
-    let mines = rawMines;
-
-    if (mines < 1) {
-      mines = 1;
+  onSettingsChange(settings: GameSettings, isVolumeChange = false): void {
+    if (isVolumeChange) {
+      this.volume = settings.volume;
+      this.musicVolume = settings.musicVolume;
+    } else {
+      const nextRows = Number.isFinite(settings.rows) ? Math.floor(settings.rows) : this.rows;
+      const nextCols = Number.isFinite(settings.cols) ? Math.floor(settings.cols) : this.cols;
+      let rows = Math.min(Math.max(nextRows, 2), 20);
+      let cols = Math.min(Math.max(nextCols, 2), 20);
+  
+      const maxMines = rows * cols - 1;
+      const rawMines = Number.isFinite(settings.mines) ? Math.floor(settings.mines) : this.totalMines;
+      let mines = rawMines;
+  
+      if (mines < 1) {
+        mines = 1;
+      }
+      if (mines > maxMines) {
+        mines = maxMines;
+      }
+  
+      this.rows = rows;
+      this.cols = cols;
+      this.totalMines = mines;
+      
+      this.newGame();
     }
-    if (mines > maxMines) {
-      mines = maxMines;
-    }
-
-    this.rows = rows;
-    this.cols = cols;
-    this.totalMines = mines;
-    this.volume = settings.volume;
-    this.musicVolume = settings.musicVolume;
-
-    this.newGame();
   }
 
   onCellClick(cell: Cell): void {

@@ -5,7 +5,7 @@
     </div>
     <div class="flex  w-full items-center gap-4 justify-center">
       <div 
-        class="toc py-1 px-3 text-[2rem] text-center max-w-[10rem] mx-auto engraved-text"
+        class="toc px-3 text-[2rem] text-center max-w-[10rem] mx-auto engraved-text"
         [upCustomTooltip]="'Время от начала игры'"
       >
         {{ formattedDuration }}
@@ -15,7 +15,7 @@
         class="control-button toc mx-auto" (click)="onNewGameClick()"
         [upCustomTooltip]="'Начать игру заново'"
       >
-        <img src="./assets/images/icons8-refresh.svg" alt="bomb" class="w-[2rem]" />
+        <img src="./assets/images/icons8-refresh.svg" alt="bomb" class="min-w-[2rem] w-[2rem]" />
       </button>
 
       <button 
@@ -24,9 +24,9 @@
         [upCustomTooltip]="soundService.isSoundEnabled() ? 'Выключить звуковые эффекты' : 'Включить звуковые эффекты'"
       >
         @if (!soundService.isSoundEnabled()) {
-          <img src="./assets/images/speaker-low-volume.svg" alt="low-volume" class="w-[2rem] grayscale-50" />
+          <img src="./assets/images/speaker-low-volume.svg" alt="low-volume" class="min-w-[2rem] w-[2rem] grayscale-50" />
         } @else {
-          <img src="./assets/images/speaker-high-volume.svg" alt="high-volume" class="w-[2rem] grayscale-50" />
+          <img src="./assets/images/speaker-high-volume.svg" alt="high-volume" class="min-w-[2rem] w-[2rem] grayscale-50" />
         }
       </button>
 
@@ -35,7 +35,7 @@
         (click)="gameService.openSettings()"
         [upCustomTooltip]="'Открыть настройки'"
       >
-        <img src="./assets/images/icons8-settings.svg" alt="settings" class="w-[2rem]" />
+        <img src="./assets/images/icons8-settings.svg" alt="settings" class="min-w-[2rem] w-[2rem]" />
       </button>
 
       @if (isRadioPlayed()) {
@@ -44,8 +44,8 @@
           (click)="stopRadio()"
           [upCustomTooltip]="'Выключить музыку'"
         >
-          <img src="./assets/images/stop-svgrepo-com.svg" alt="stop-radio" class="w-[2rem]" />
-          <img src="./assets/images/cb17b80a942d7c317a35ff1324fae12f.gif" alt="playing-radio" class="z-[1] w-[90%] absolute lg:left-0.5 left-1 right-1 lg:bottom-[-40%] bottom-[-25%]" />
+          <img src="./assets/images/stop-svgrepo-com.svg" alt="stop-radio" class="min-w-[2rem] w-[2rem]" preload />
+          <img src="./assets/images/cb17b80a942d7c317a35ff1324fae12f.gif" alt="playing-radio" class="z-[1] w-[90%] absolute lg:left-0.5 left-1 right-1 lg:bottom-[-40%] bottom-[-25%]" preload />
         </button>
       } @else {
         <button 
@@ -53,21 +53,48 @@
           (click)="playRadio()"
           [upCustomTooltip]="'Включить музыку'"
         >
-          <img src="./assets/images/play-fill-svgrepo-com.svg" alt="paly-radio" class="w-[2rem]" />
+          <img src="./assets/images/play-fill-svgrepo-com.svg" alt="play-radio" class="min-w-[2rem] w-[2rem]" />
         </button>
       }
     </div>
   </div>
   <div id="sticky-sidebar-stuff">
-    <div class="w-full toc p-4 inner-light-shadow">
-      <div class="status-line flex items-center ">
-        Мины всего: {{ gameService.totalMines }} 
+    <div class="w-full toc p-4 inner-light-shadow flex items-start justify-center flex-row gap-10 lg:gap-0 lg:flex-col">
+      <div class="status-line flex items-center hidden lg:flex w-full justify-between">
+        <span>
+          Мины всего: 
+        </span>
+        <span>
+          {{ gameService.totalMines }} 
+        </span>
       </div>
-      <div class="status-line">
-        Поставлено флагов: {{ gameService.flagsCount() }}
+      <div class="flex items-center lg:hidden text-[1.5rem]">
+        <img src="./assets/images/black-bomb.svg" alt="mines" class="min-w-[2rem] w-[2rem] mr-1" />
+        {{ gameService.totalMines }} 
       </div>
-      <div class="status-line">
-        Предполагаемых мин без флагов: {{ gameService.remainingMines() }}
+      <div class="status-line flex items-center hidden lg:flex w-full justify-between">
+        <span>
+          Поставлено флагов: 
+        </span>
+        <span>
+          {{ gameService.flagsCount() }}
+        </span>
+      </div>
+      <div class="flex items-center lg:hidden text-[1.5rem]">
+        <img src="./assets/images/DodgerRed-Flag-Waving.svg" alt="flags" class="min-w-[2rem] w-[2rem] mr-1" />
+        {{ gameService.flagsCount() }}
+      </div>
+      <div class="status-line flex items-center hidden lg:flex w-full justify-between">
+        <span>
+          Предполагаемых мин без флагов: 
+        </span>
+        <span>
+          {{ gameService.remainingMines() }}
+        </span>
+      </div>
+      <div class="flex items-center lg:hidden text-[1.5rem]">
+        <img src="./assets/images/cherrybomb-remix.svg" alt="maybe-mines" class="min-w-[2rem] w-[2rem] mr-1" />
+        {{ gameService.remainingMines() }}
       </div>
     </div>
   </div>
