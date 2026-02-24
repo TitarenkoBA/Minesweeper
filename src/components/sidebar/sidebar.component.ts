@@ -1,5 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { GameService } from '@shared/services/game.service';
+import { RadioService } from '@shared/services/radio.service';
 import { SoundService } from '@shared/services/sound.service';
 import { CustomTooltipDirect } from '@shared/ui/tooltip/tooltip.directive';
 
@@ -20,9 +21,7 @@ export interface GameSettings {
 export class SidebarComponent {
   public readonly gameService = inject(GameService);
   public readonly soundService = inject(SoundService);
-  public readonly isRadioOpen = signal(false);
-  public readonly isRadioPlayed = signal(false);
-
+  public readonly radioService = inject(RadioService);
   onNewGameClick(): void {
     this.gameService.newGame();
   }
@@ -33,23 +32,6 @@ export class SidebarComponent {
       this.soundService.enableSound()
     }
   }
-  toggleRadio(): void {
-    if (this.isRadioOpen()) {
-      this.isRadioOpen.set(false)
-    } else {
-      this.isRadioOpen.set(true)
-    }
-  }
-  playRadio(): void {
-      this.soundService.stopAllSounds()
-      this.isRadioPlayed.set(true);
-      this.soundService.playSound('https://eurotruckradio.stream.laut.fm/eurotruckradio', this.gameService.volume)
-  }
-  stopRadio(): void {
-      this.isRadioPlayed.set(false);
-      this.soundService.stopAllSounds()
-  }
-
   get formattedDuration(): string {
     const minutes = Math.floor(this.gameService.gameDurationSeconds() / 60);
     const seconds = this.gameService.gameDurationSeconds() % 60;

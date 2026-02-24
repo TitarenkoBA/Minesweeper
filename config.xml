@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.example.myapp" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>MeuAppCool</name>
+    <name>Minesweeper</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+        Minesweeper is a timeless puzzle and strategy game where your goal is to clear a grid of hidden mines without detonating any.
     </description>
-    <author email="dev@cordova.apache.org" href="https://cordova.apache.org">
-        Apache Cordova Team
+    <author email="titarenkoborisandreevich@ya.ru" >
+        Boris Titarenko
     </author>
     <content src="index.html" />
     <allow-intent href="http://*/*" />

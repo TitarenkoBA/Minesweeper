@@ -1,34 +1,33 @@
-import { Component, OnDestroy, inject, OnInit } from '@angular/core';
+import { Component, OnDestroy, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { BoardComponent } from '../components/board/board.component';
 import { SidebarComponent } from '../components/sidebar/sidebar.component';
 import { SoundService } from '../shared/services/sound.service';
 import { GameService } from '@shared/services/game.service';
 import { ClickOutside } from '@shared/directives';
+import { RadioService } from '@shared/services/radio.service';
+import { CustomTooltipDirect } from '@shared/ui/tooltip/tooltip.directive';
 
-declare const device: { platform: any; };
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, BoardComponent, SidebarComponent, ClickOutside],
+  imports: [RouterOutlet, BoardComponent, SidebarComponent, ClickOutside, CustomTooltipDirect],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
-export class App implements OnInit, OnDestroy {
+export class App implements OnDestroy {
   public readonly gameService = inject(GameService);
   public readonly soundService = inject(SoundService);
+  public readonly radioService = inject(RadioService);
 
   constructor() {
     this.gameService.loadStats();
     this.gameService.newGame();
   }
 
-  ngOnInit(): void {
-    document.addEventListener("deviceready", () => alert(device.platform))
-  }
-
   ngOnDestroy(): void {
     this.gameService.stopTimer();
   }
+
   onRowsChange(event: Event): void {
     const value = Number((event.target as HTMLInputElement).value);
     this.gameService.rows = value;

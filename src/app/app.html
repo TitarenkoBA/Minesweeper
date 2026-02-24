@@ -4,73 +4,140 @@
 
     <mines-sidebar class="w-full lg:w-[20rem]" />
 
-    <div class="absolute lg:w-[20rem] w-full {{gameService.isSettingsOpen() ? '' : 'hidden'}}">
-      <div 
-        class="settings toc p-4 animate-bounce-in {{gameService.isSettingsOpen() ? '' : 'hidden'}}"
-        (upClickOutside)="gameService.isSettingsOpen() ? gameService.closeSettings() : undefined"
-      >
-        <h3 class="settings__title inner-light-shadow">
-          Настройки
-        </h3>
-        <div class="settings__row">
-          <div class="settings__label inner-light-shadow">
-            Строк: <span class="settings__value">{{ gameService.rows }}</span>
+    @if (gameService.isSettingsOpen()) {
+      <div class="absolute lg:w-[20rem] w-full">
+        <div 
+          class="settings toc p-4 animate-bounce-in"
+          (upClickOutside)="gameService.isSettingsOpen() ? gameService.closeSettings() : undefined"
+        >
+          <h3 class="settings__title inner-light-shadow">
+            Настройки
+          </h3>
+          <div class="settings__row">
+            <div class="settings__label inner-light-shadow">
+              Строк: <span class="settings__value">{{ gameService.rows }}</span>
+            </div>
+            <input
+              type="range"
+              min="2"
+              max="20"
+              [value]="gameService.rows"
+              (input)="onRowsChange($event)"
+            />
           </div>
-          <input
-            type="range"
-            min="2"
-            max="20"
-            [value]="gameService.rows"
-            (input)="onRowsChange($event)"
-          />
-        </div>
-        <div class="settings__row">
-          <div class="settings__label inner-light-shadow">
-            Колонок: <span class="settings__value">{{ gameService.cols }}</span>
+          <div class="settings__row">
+            <div class="settings__label inner-light-shadow">
+              Колонок: <span class="settings__value">{{ gameService.cols }}</span>
+            </div>
+            <input
+              type="range"
+              min="2"
+              max="20"
+              [value]="gameService.cols"
+              (input)="onColsChange($event)"
+            />
           </div>
-          <input
-            type="range"
-            min="2"
-            max="20"
-            [value]="gameService.cols"
-            (input)="onColsChange($event)"
-          />
-        </div>
-        <div class="settings__row">
-          <div class="settings__label inner-light-shadow">
-            Мин: <span class="settings__value">{{ gameService.totalMines }}</span>
+          <div class="settings__row">
+            <div class="settings__label inner-light-shadow">
+              Мин: <span class="settings__value">{{ gameService.totalMines }}</span>
+            </div>
+            <input
+              type="range"
+              min="1"
+              [value]="gameService.totalMines"
+              (input)="onMinesChange($event)"
+            />
           </div>
-          <input
-            type="range"
-            min="1"
-            [value]="gameService.totalMines"
-            (input)="onMinesChange($event)"
-          />
-        </div>
-        <div class="settings__row">
-          <div class="settings__label inner-light-shadow">
-            Громкость эффектов
+          <div class="settings__row">
+            <div class="settings__label inner-light-shadow">
+              Громкость эффектов
+            </div>
+            <input
+              type="range"
+              min="1"
+              [value]="gameService.volume"
+              (input)="onVolumeChange($event)"
+            />
           </div>
-          <input
-            type="range"
-            min="1"
-            [value]="gameService.volume"
-            (input)="onVolumeChange($event)"
-          />
-        </div>
-        <div class="settings__row">
-          <div class="settings__label inner-light-shadow">
-            Громкость музыки
+          <div class="settings__row">
+            <div class="settings__label inner-light-shadow">
+              Громкость музыки
+            </div>
+            <input
+              type="range"
+              min="1"
+              [value]="gameService.musicVolume"
+              (input)="onMusicVolumeChange($event)"
+            />
           </div>
-          <input
-            type="range"
-            min="1"
-            [value]="gameService.musicVolume"
-            (input)="onMusicVolumeChange($event)"
-          />
         </div>
       </div>
-    </div>
+    }
+
+    @if (radioService.isRadioOpen()) {
+      <div class="absolute lg:w-[20rem] w-full">
+        <div 
+          class="settings toc flex flex-col items-center p-4 animate-bounce-in"
+          (upClickOutside)="radioService.isRadioOpen() ? radioService.toggleRadio() : undefined"
+        >
+          <div 
+            class="toc px-3 text-[2rem] text-center w-full overflow-hidden mx-auto engraved-text"
+          >
+            Радио
+          </div>
+          <h3 class="settings__title inner-light-shadow">
+            {{ radioService.playedStation().name }}
+          </h3>
+          <div class="flex gap-4 mt-5">
+            <button 
+              class="control-button toc mx-auto {{radioService.isFirstStation() ? 'opacity-50 cursor-default pointer-events-none' : ''}}" 
+              (click)="radioService.prevStation()"
+              [upCustomTooltip]="'Предыдущая станция'"
+            >
+              <img src="./assets/images/media-skip-backward-svgrepo-com.svg" alt="settings" class="min-w-[2rem] w-[2rem] brightness-130" />
+            </button>
+
+            @if (radioService.isRadioPlayed()) {
+              <button 
+                class="relative control-button toc mx-auto"
+                (click)="radioService.stopRadio()"
+                [upCustomTooltip]="'Выключить музыку'"
+              >
+                <img src="./assets/images/media-playback-stop-svgrepo-com.svg" alt="stop-radio" class="min-w-[2rem] w-[2rem] brightness-130" preload />
+              </button>
+            } @else {
+              <button 
+                class="control-button toc mx-auto" 
+                (click)="radioService.playRadio()"
+                [upCustomTooltip]="'Включить музыку'"
+              >
+                <img src="./assets/images/media-playback-start-svgrepo-com.svg" alt="play-radio" class="min-w-[2rem] w-[2rem] brightness-130" />
+              </button>
+            }
+
+            <button 
+              class="control-button toc mx-auto {{radioService.isLastStation() ? 'opacity-50 cursor-default pointer-events-none' : ''}}" 
+              (click)="radioService.nextStation()"
+              [upCustomTooltip]="'Следующая станция'"
+            >
+              <img src="./assets/images/media-skip-forward-svgrepo-com.svg" alt="settings" class="min-w-[2rem] w-[2rem] brightness-130" />
+            </button>
+          </div>
+          
+          <div class="settings__row w-full">
+            <div class="settings__label inner-light-shadow">
+              Громкость музыки
+            </div>
+            <input
+              type="range"
+              min="1"
+              [value]="gameService.musicVolume"
+              (input)="onMusicVolumeChange($event)"
+            />
+          </div>
+        </div>
+      </div>
+    }
 
     @if (gameService.gameWon()) {
       <div class="absolute lg:w-[20rem] w-full {{gameService.gameWon() ? '' : 'hidden'}}">

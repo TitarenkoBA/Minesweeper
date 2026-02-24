@@ -38,24 +38,16 @@
         <img src="./assets/images/icons8-settings.svg" alt="settings" class="min-w-[2rem] w-[2rem]" />
       </button>
 
-      @if (isRadioPlayed()) {
-        <button 
-          class="relative control-button toc mx-auto"
-          (click)="stopRadio()"
-          [upCustomTooltip]="'Выключить музыку'"
-        >
-          <img src="./assets/images/stop-svgrepo-com.svg" alt="stop-radio" class="min-w-[2rem] w-[2rem]" preload />
+      <button 
+        class="relative control-button toc mx-auto {{radioService.isRadioOpen() ? 'opacity-50' : ''}}" 
+        (click)="radioService.toggleRadio()"
+        [upCustomTooltip]="'Открыть радио'"
+      >
+        <img src="./assets/images/media-color-2-headphones-svgrepo-com.svg" alt="stop-radio" class="min-w-[2rem] w-[2rem]" preload />
+        @if (radioService.isRadioPlayed()) {
           <img src="./assets/images/cb17b80a942d7c317a35ff1324fae12f.gif" alt="playing-radio" class="z-[1] w-[90%] absolute lg:left-0.5 left-1 right-1 lg:bottom-[-40%] bottom-[-25%]" preload />
-        </button>
-      } @else {
-        <button 
-          class="control-button toc mx-auto" 
-          (click)="playRadio()"
-          [upCustomTooltip]="'Включить музыку'"
-        >
-          <img src="./assets/images/play-fill-svgrepo-com.svg" alt="play-radio" class="min-w-[2rem] w-[2rem]" />
-        </button>
-      }
+        }
+      </button>
     </div>
   </div>
   <div id="sticky-sidebar-stuff">
