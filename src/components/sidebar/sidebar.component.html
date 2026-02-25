@@ -57,12 +57,12 @@
           Мины всего: 
         </span>
         <span>
-          {{ gameService.totalMines }} 
+          {{ gameService.totalMines() }} 
         </span>
       </div>
       <div class="flex items-center lg:hidden text-[1.5rem]">
         <img src="./assets/images/black-bomb.svg" alt="mines" class="min-w-[2rem] w-[2rem] mr-1" />
-        {{ gameService.totalMines }} 
+        {{ gameService.totalMines() }} 
       </div>
       <div class="status-line flex items-center hidden lg:flex w-full justify-between">
         <span>
@@ -73,7 +73,7 @@
         </span>
       </div>
       <div class="flex items-center lg:hidden text-[1.5rem]">
-        <img src="./assets/images/DodgerRed-Flag-Waving.svg" alt="flags" class="min-w-[2rem] w-[2rem] mr-1" />
+        <img src="./assets/images/nicubunu_Waving_white_flag.svg" alt="flags" class="min-w-[2rem] w-[2rem] mr-1" />
         {{ gameService.flagsCount() }}
       </div>
       <div class="status-line flex items-center hidden lg:flex w-full justify-between">

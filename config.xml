@@ -7,7 +7,13 @@
     <author email="titarenkoborisandreevich@ya.ru" >
         Boris Titarenko
     </author>
-    <content src="index.html" />
+    <platform name="android">
+        <preference name="AutoHideSplashScreen" value="true" />
+        <preference name="SplashScreenDelay" value="3000" />
+        <preference name="AndroidWindowSplashScreenBackground" value="#2e2e2e" />
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="browser/assets/images/cherrybomb-remix.svg" />
+    </platform>
+    <content src="browser/index.html" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
 </widget>

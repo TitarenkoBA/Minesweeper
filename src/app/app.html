@@ -10,41 +10,43 @@
           class="settings toc p-4 animate-bounce-in"
           (upClickOutside)="gameService.isSettingsOpen() ? gameService.closeSettings() : undefined"
         >
-          <h3 class="settings__title inner-light-shadow">
+          <div 
+            class="toc px-3 text-[2rem] text-center w-full overflow-hidden mx-auto engraved-text"
+          >
             Настройки
-          </h3>
+          </div>
           <div class="settings__row">
             <div class="settings__label inner-light-shadow">
-              Строк: <span class="settings__value">{{ gameService.rows }}</span>
+              Строк: <span class="settings__value">{{ gameService.rows() }}</span>
             </div>
             <input
               type="range"
               min="2"
               max="20"
-              [value]="gameService.rows"
+              [value]="gameService.rows()"
               (input)="onRowsChange($event)"
             />
           </div>
           <div class="settings__row">
             <div class="settings__label inner-light-shadow">
-              Колонок: <span class="settings__value">{{ gameService.cols }}</span>
+              Колонок: <span class="settings__value">{{ gameService.cols() }}</span>
             </div>
             <input
               type="range"
               min="2"
               max="20"
-              [value]="gameService.cols"
+              [value]="gameService.cols()"
               (input)="onColsChange($event)"
             />
           </div>
           <div class="settings__row">
             <div class="settings__label inner-light-shadow">
-              Мин: <span class="settings__value">{{ gameService.totalMines }}</span>
+              Мин: <span class="settings__value">{{ gameService.totalMines() }}</span>
             </div>
             <input
               type="range"
               min="1"
-              [value]="gameService.totalMines"
+              [value]="gameService.totalMines()"
               (input)="onMinesChange($event)"
             />
           </div>
@@ -55,7 +57,7 @@
             <input
               type="range"
               min="1"
-              [value]="gameService.volume"
+              [value]="gameService.volume()"
               (input)="onVolumeChange($event)"
             />
           </div>
@@ -66,7 +68,7 @@
             <input
               type="range"
               min="1"
-              [value]="gameService.musicVolume"
+              [value]="gameService.musicVolume()"
               (input)="onMusicVolumeChange($event)"
             />
           </div>
@@ -131,7 +133,7 @@
             <input
               type="range"
               min="1"
-              [value]="gameService.musicVolume"
+              [value]="gameService.musicVolume()"
               (input)="onMusicVolumeChange($event)"
             />
           </div>
@@ -142,13 +144,12 @@
     @if (gameService.gameWon()) {
       <div class="absolute lg:w-[20rem] w-full {{gameService.gameWon() ? '' : 'hidden'}}">
         <div 
-          class="status status--won flex items-center justify-center toc p-4 animate-bounce-in"
+          class="status status--won flex flex-col items-center justify-center toc p-4 animate-bounce-in"
           (upClickOutside)="gameService.newGame()"
         >
           <img src="./assets/images/2336769_b9413.gif" alt="win" class="h-7.5 w-7.5 mr-2" />
-          Победа! 
-          <br />
-          Все мины найдены.
+          <span>Победа!</span>
+          <span>Все мины найдены.</span>
         </div>
       </div>
     }
@@ -156,13 +157,12 @@
     @if (gameService.gameOver() && !gameService.gameWon()) {
       <div class="absolute lg:w-[20rem] w-full {{gameService.gameOver() && !gameService.gameWon() ? '' : 'hidden'}}">
         <div 
-          class="status status--lost flex items-center justify-center toc p-4 animate-bounce-in"
+          class="status status--lost flex flex-col items-center justify-center toc p-4 animate-bounce-in"
           (upClickOutside)="gameService.newGame()"
         >
           <img src="./assets/images/boom-cat.gif" alt="lose" class="h-7.5 w-7.5 mr-2" />
-          Поражение. 
-          <br />
-          Вы подорвались на мине.
+          <span>Поражение.</span>
+          <span>Вы подорвались на мине.</span>
         </div>
       </div>
     }

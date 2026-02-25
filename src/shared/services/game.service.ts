@@ -11,42 +11,34 @@ import { GameSettings } from 'src/components/sidebar/sidebar.component';
 export class GameService {
   public readonly soundService = inject(SoundService);
   public readonly isSettingsOpen = signal(false);
-
-  rows = 8;
-  cols = 8;
-  readonly titleRows = this.rows;
-  readonly titleCols = this.cols;
+  rows = signal(8);
+  cols = signal(8);
+  totalMines = signal(10);
+  volume = signal(0.01);
+  musicVolume = signal(0.01);
   private get cellCount(): number {
-    return this.rows * this.cols;
+    return this.rows() * this.cols();
   }
-
-  totalMines = 10;
-  volume = 0.01;
-  musicVolume = 0.01;
-
+  readonly gameDurationSeconds = signal(0);
+  readonly gameID = signal<string | null>(uniqId());
   readonly cells = signal<Cell[]>([]);
   readonly gameOver = signal(false);
   readonly gameWon = signal(false);
-
   readonly flagsCount = computed(
     () => this.cells().filter((cell) => cell.isFlagged).length,
   );
-
+  readonly minMines = computed(() => Math.floor(this.cellCount / (this.rows() > this.cols() ? this.rows() : this.cols())));
+  readonly maxMines = computed(() => this.cellCount - this.cols());
   readonly remainingMines = computed(
-    () => this.totalMines - this.flagsCount(),
+    () => this.totalMines() - this.flagsCount(),
   );
-
   private minesPlaced = false;
   private moveCounter = 0;
-
   private gameStartTime: number | null = null;
   private timerId: number | null = null;
-  readonly gameDurationSeconds = signal(0);
-  readonly gameID = signal<string | null>(uniqId());
-
-  private readonly statsStorageKey = 'minesweeperGameStats';
   private gameStats: GameStatsEntry[] = [];
   private totalGames = 0;
+  private readonly statsStorageKey = 'minesweeperGameStats';
 
   constructor() {
     this.loadStats();
@@ -76,7 +68,7 @@ export class GameService {
   }
   newGame(): void {
     this.gameID.set(null);
-    this.soundService.playSound('./assets/sounds/a9b9946fbabe4d0.mp3', this.volume);
+    this.soundService.playSound('./assets/sounds/a9b9946fbabe4d0.mp3', this.volume());
 
     this.moveCounter = 0;
     this.stopTimer();
@@ -91,16 +83,16 @@ export class GameService {
 
   onSettingsChange(settings: GameSettings, isVolumeChange = false): void {
     if (isVolumeChange) {
-      this.volume = settings.volume;
-      this.musicVolume = settings.musicVolume;
+      this.volume.set(settings.volume);
+      this.musicVolume.set(settings.musicVolume);
     } else {
-      const nextRows = Number.isFinite(settings.rows) ? Math.floor(settings.rows) : this.rows;
-      const nextCols = Number.isFinite(settings.cols) ? Math.floor(settings.cols) : this.cols;
+      const nextRows = Number.isFinite(settings.rows) ? Math.floor(settings.rows) : this.rows();
+      const nextCols = Number.isFinite(settings.cols) ? Math.floor(settings.cols) : this.cols();
       let rows = Math.min(Math.max(nextRows, 2), 20);
       let cols = Math.min(Math.max(nextCols, 2), 20);
   
       const maxMines = rows * cols - 1;
-      const rawMines = Number.isFinite(settings.mines) ? Math.floor(settings.mines) : this.totalMines;
+      const rawMines = Number.isFinite(settings.mines) ? Math.floor(settings.mines) : this.totalMines();
       let mines = rawMines;
   
       if (mines < 1) {
@@ -110,9 +102,9 @@ export class GameService {
         mines = maxMines;
       }
   
-      this.rows = rows;
-      this.cols = cols;
-      this.totalMines = mines;
+      this.rows.set(rows);
+      this.cols.set(cols);
+      this.totalMines.set(mines);
       
       this.newGame();
     }
@@ -135,7 +127,7 @@ export class GameService {
       return;
     }
 
-    this.soundService.playSound('./assets/sounds/877427.mp3', this.volume);
+    this.soundService.playSound('./assets/sounds/877427.mp3', this.volume());
     
     this.startTimer();
 
@@ -151,7 +143,7 @@ export class GameService {
       this.gameOver.set(true);
       this.recordGame('loss', cells);
 
-      this.soundService.playSound('./assets/sounds/1c7227d9b23f914.mp3', this.volume);
+      this.soundService.playSound('./assets/sounds/1c7227d9b23f914.mp3', this.volume());
       return;
     }
 
@@ -162,7 +154,7 @@ export class GameService {
       this.gameWon.set(true);
       this.recordGame('win', cells);
 
-      this.soundService.playSound('./assets/sounds/winn-cc.mp3', this.volume);
+      this.soundService.playSound('./assets/sounds/winn-cc.mp3', this.volume());
     }
   }
 
@@ -181,7 +173,7 @@ export class GameService {
       return;
     }
 
-    this.soundService.playSound('./assets/sounds/mouth-pop-finger.mp3', this.volume);
+    this.soundService.playSound('./assets/sounds/mouth-pop-finger.mp3', this.volume());
 
     this.moveCounter += 1;
 
@@ -210,7 +202,7 @@ export class GameService {
       (_, index) => index,
     ).filter((index) => index !== firstClickIndex);
 
-    let minesToPlace = Math.min(this.totalMines, availableIndices.length);
+    let minesToPlace = Math.min(this.totalMines(), availableIndices.length);
 
     while (minesToPlace > 0 && availableIndices.length > 0) {
       const randomPosition = Math.floor(
@@ -253,8 +245,8 @@ export class GameService {
 
   private getNeighbors(index: number): number[] {
     const neighbors: number[] = [];
-    const row = Math.floor(index / this.cols);
-    const col = index % this.cols;
+    const row = Math.floor(index / this.cols());
+    const col = index % this.cols();
 
     for (let dr = -1; dr <= 1; dr += 1) {
       for (let dc = -1; dc <= 1; dc += 1) {
@@ -267,14 +259,14 @@ export class GameService {
 
         if (
           neighborRow < 0 ||
-          neighborRow >= this.rows ||
+          neighborRow >= this.rows() ||
           neighborCol < 0 ||
-          neighborCol >= this.cols
+          neighborCol >= this.cols()
         ) {
           continue;
         }
 
-        const neighborIndex = neighborRow * this.cols + neighborCol;
+        const neighborIndex = neighborRow * this.cols() + neighborCol;
 
         if (neighborIndex < 0 || neighborIndex >= this.cellCount) {
           continue;
@@ -353,9 +345,9 @@ export class GameService {
 
     const entry: GameStatsEntry = {
       id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
-      rows: this.rows,
-      cols: this.cols,
-      mines: this.totalMines,
+      rows: this.rows(),
+      cols: this.cols(),
+      mines: this.totalMines(),
       result,
       moves: this.moveCounter,
       minePositions,

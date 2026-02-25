@@ -30,41 +30,41 @@ export class App implements OnDestroy {
 
   onRowsChange(event: Event): void {
     const value = Number((event.target as HTMLInputElement).value);
-    this.gameService.rows = value;
+    this.gameService.rows.set(value);
     this.changeSettings();
   }
 
   onColsChange(event: Event): void {
     const value = Number((event.target as HTMLInputElement).value);
-    this.gameService.cols = value;
+    this.gameService.cols.set(value);
     this.changeSettings();
   }
 
   onMinesChange(event: Event): void {
     const value = Number((event.target as HTMLInputElement).value);
-    this.gameService.totalMines = value;
+    this.gameService.totalMines.set(value);
     this.changeSettings();
   }
   onVolumeChange(event: Event): void {
     const value = Number((event.target as HTMLInputElement).value);
-    this.gameService.volume = value;
+    this.gameService.volume.set(value);
     this.soundService.setVolumeAllSounds(value/100)
     this.changeSettings(true);
   }
   onMusicVolumeChange(event: Event): void {
     const value = Number((event.target as HTMLInputElement).value);
-    this.gameService.musicVolume = value;
+    this.gameService.musicVolume.set(value);
     this.soundService.setVolumeAllSounds(value/100, true)
     this.changeSettings(true);
   }
 
   private changeSettings(isVolumeChange = false): void {
     this.gameService.onSettingsChange({
-      rows: this.gameService.rows,
-      cols: this.gameService.cols,
-      mines: this.gameService.totalMines,
-      volume: this.gameService.volume,
-      musicVolume: this.gameService.musicVolume,
+      rows: this.gameService.rows(),
+      cols: this.gameService.cols(),
+      mines: this.gameService.totalMines(),
+      volume: this.gameService.volume(),
+      musicVolume: this.gameService.musicVolume(),
     }, isVolumeChange);
   }
 }

@@ -1,4 +1,4 @@
-<div class="mines-container" [style.gridTemplateColumns]="'repeat(' + gameService.cols + ', var(--s))'">
+<div class="mines-container" [style.gridTemplateColumns]="'repeat(' + gameService.cols() + ', var(--s))'">
   @for (cell of gameService.cells(); track cell.id) {
     <div 
       (click)="handleCellClick(cell)" 

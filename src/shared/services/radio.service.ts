@@ -20,8 +20,8 @@ export class RadioService {
     },
     {
       index: 2,
-      name: 'Radio ROKS Rock-Ballads',
-      url: 'https://tavr.tvstitch.com/RadioROKS_Ballads'
+      name: 'Rock Garden Tour Radio',
+      url: 'http://stream.radio.co/s291300354/listen'
     },
     {
       index: 3,
@@ -86,7 +86,7 @@ export class RadioService {
   playRadio(): void {
       this.soundService.stopAllSounds()
       this.isRadioPlayed.set(true);
-      this.soundService.playSound(this.playedStation().url, this.gameService.musicVolume)
+      this.soundService.playSound(this.playedStation().url, this.gameService.musicVolume())
   }
   stopRadio(): void {
       this.isRadioPlayed.set(false);
