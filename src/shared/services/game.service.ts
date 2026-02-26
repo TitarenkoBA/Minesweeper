@@ -11,6 +11,11 @@ import { GameSettings } from 'src/components/sidebar/sidebar.component';
 export class GameService {
   public readonly soundService = inject(SoundService);
   public readonly isSettingsOpen = signal(false);
+  public readonly isDefuseOpen = signal(false);
+  public readonly isDefuseActive = signal(false);
+  public readonly defusingCell = signal<null|Cell>(null);
+  public readonly isDefuseToolUsed = signal(false);
+  public readonly isDefused = signal(false);
   rows = signal(8);
   cols = signal(8);
   totalMines = signal(10);
@@ -27,8 +32,8 @@ export class GameService {
   readonly flagsCount = computed(
     () => this.cells().filter((cell) => cell.isFlagged).length,
   );
-  readonly minMines = computed(() => Math.floor(this.cellCount / (this.rows() > this.cols() ? this.rows() : this.cols())));
-  readonly maxMines = computed(() => this.cellCount - this.cols());
+  readonly minMines = signal(Math.max(this.cols(), this.rows()));
+  readonly maxMines = signal(this.rows() * this.cols() - 2);
   readonly remainingMines = computed(
     () => this.totalMines() - this.flagsCount(),
   );
@@ -66,6 +71,38 @@ export class GameService {
       setTimeout(() =>this.isSettingsOpen.set(false))
     }
   }
+  toggleDefuseActive(): void {
+    if (this.isDefuseActive()) {
+      this.isDefuseActive.set(false)
+    } else {
+      this.isDefuseActive.set(true)
+    }
+  }
+  openDefuse(): void {
+    if (!this.isDefuseOpen() && !this.isDefuseToolUsed()) {
+      setTimeout(() =>this.isDefuseOpen.set(true))
+    }
+  }
+  closeDefuse(): void {
+    if (this.isDefuseOpen()) {
+      setTimeout(() =>this.isDefuseOpen.set(false))
+    }
+  }
+  onDefuseButtonClick(): void {
+    const chance = Math.floor(Math.random() * 2);
+    if (chance) {
+      this.isDefused.set(true)
+    } else {
+      this.isDefused.set(false)
+    }
+    const cell = this.defusingCell();
+    this.isDefuseToolUsed.set(true);
+    this.isDefuseActive.set(false);
+    this.closeDefuse();
+    if (cell) {
+      setTimeout(() => this.onCellClick(cell, true));
+    };
+  }
   newGame(): void {
     this.gameID.set(null);
     this.soundService.playSound('./assets/sounds/a9b9946fbabe4d0.mp3', this.volume());
@@ -77,6 +114,10 @@ export class GameService {
     this.minesPlaced = false;
     this.gameOver.set(false);
     this.gameWon.set(false);
+    this.isDefuseToolUsed.set(false);
+    this.isDefuseActive.set(false);
+    this.isDefused.set(false);
+    this.defusingCell.set(null);
     this.cells.set(this.createEmptyCells());
     setTimeout(() => this.gameID.set(uniqId()));
   }
@@ -91,12 +132,13 @@ export class GameService {
       let rows = Math.min(Math.max(nextRows, 2), 20);
       let cols = Math.min(Math.max(nextCols, 2), 20);
   
-      const maxMines = rows * cols - 1;
+      const maxMines = rows * cols - 2;
+      const minMines = Math.max(cols, rows);
       const rawMines = Number.isFinite(settings.mines) ? Math.floor(settings.mines) : this.totalMines();
       let mines = rawMines;
   
-      if (mines < 1) {
-        mines = 1;
+      if (mines < minMines) {
+        mines = minMines;
       }
       if (mines > maxMines) {
         mines = maxMines;
@@ -104,13 +146,15 @@ export class GameService {
   
       this.rows.set(rows);
       this.cols.set(cols);
+      this.minMines.set(minMines);
+      this.maxMines.set(maxMines);
       this.totalMines.set(mines);
       
       this.newGame();
     }
   }
 
-  onCellClick(cell: Cell): void {
+  onCellClick(cell: Cell, isDefusingCell = false): void {
     if (this.gameOver() || this.gameWon()) {
       return;
     }
@@ -123,7 +167,7 @@ export class GameService {
     const index = cell.id;
     const current = cells[index];
 
-    if (current.isRevealed || current.isFlagged) {
+    if (current.isRevealed || current.isFlagged || current.isDefused) {
       return;
     }
 
@@ -133,7 +177,58 @@ export class GameService {
 
     this.moveCounter += 1;
 
+    if (isDefusingCell && this.isDefused() && this.defusingCell()) {
+      cells[index] = {
+        ...current,
+        isRevealed: true,
+        canBeDefused: true,
+        isDefused: true,
+      };
+      this.cells.set(cells);
+
+      this.defusingCell.set(null);
+      this.isDefused.set(false);
+      this.isDefuseActive.set(false);
+
+      this.soundService.playSound('./assets/sounds/1c7227d9b23f914.mp3', this.volume());
+
+      if (cells.filter(c => c.isMine).every((c) => c.isRevealed || c.isDefused)) {
+        this.gameWon.set(true);
+        this.recordGame('win', cells);
+
+        this.soundService.playSound('./assets/sounds/winn-cc.mp3', this.volume());
+      } else {
+        return;
+      }
+      
+    }
+
+    if (current.canBeDefused && !current.isDefused && !current.isFlagged && !this.isDefuseActive()) {
+      cells[index] = {
+        ...current,
+        isRevealed: true,
+        isDefused: true,
+      };
+      this.cells.set(cells);
+
+      this.soundService.playSound('./assets/sounds/1c7227d9b23f914.mp3', this.volume());
+
+      if (cells.filter(c => c.isMine).every((c) => c.isRevealed || c.isDefused)) {
+        this.gameWon.set(true);
+        this.recordGame('win', cells);
+
+        this.soundService.playSound('./assets/sounds/winn-cc.mp3', this.volume());
+      } else {
+        return;
+      }
+    }
+
     if (current.isMine) {
+      if (this.isDefuseActive()) {
+        this.defusingCell.set(current);
+        this.openDefuse();
+        return
+      }
       cells[index] = {
         ...current,
         isRevealed: true,
@@ -191,6 +286,8 @@ export class GameService {
       isMine: false,
       isRevealed: false,
       isFlagged: false,
+      isDefused: false,
+      canBeDefused: false,
       adjacentMines: 0,
     }));
   }
@@ -203,6 +300,7 @@ export class GameService {
     ).filter((index) => index !== firstClickIndex);
 
     let minesToPlace = Math.min(this.totalMines(), availableIndices.length);
+    let canBeDefusedConter = 1;
 
     while (minesToPlace > 0 && availableIndices.length > 0) {
       const randomPosition = Math.floor(
@@ -213,6 +311,7 @@ export class GameService {
       cells[cellIndex] = {
         ...cells[cellIndex],
         isMine: true,
+        canBeDefused: 1 === canBeDefusedConter++,
       };
 
       minesToPlace -= 1;

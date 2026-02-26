@@ -6,7 +6,7 @@ import { SoundService } from '../shared/services/sound.service';
 import { GameService } from '@shared/services/game.service';
 import { ClickOutside } from '@shared/directives';
 import { RadioService } from '@shared/services/radio.service';
-import { CustomTooltipDirect } from '@shared/ui/tooltip/tooltip.directive';
+import { CustomTooltipDirect } from '@shared/directives/tooltip.directive';
 
 @Component({
   selector: 'app-root',

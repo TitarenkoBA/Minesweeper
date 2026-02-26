@@ -45,7 +45,8 @@
             </div>
             <input
               type="range"
-              min="1"
+              [min]="gameService.minMines()"
+              [max]="gameService.maxMines()"
               [value]="gameService.totalMines()"
               (input)="onMinesChange($event)"
             />
@@ -136,6 +137,41 @@
               [value]="gameService.musicVolume()"
               (input)="onMusicVolumeChange($event)"
             />
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (gameService.isDefuseOpen()) {
+      <div class="absolute lg:w-[20rem] w-full">
+        <div 
+          class="settings toc flex flex-col items-center p-4 animate-bounce-in"
+          (upClickOutside)="gameService.isDefuseOpen() ? gameService.closeDefuse() : undefined"
+        >
+          <div 
+            class="toc px-3 text-[2rem] text-center w-full overflow-hidden mx-auto engraved-text"
+          >
+            Разминирование
+          </div>
+          <h3 class="settings__title inner-light-shadow text-center">
+            Выберите провод, который хотите перерезать, для обезвреживания бомбы
+          </h3>
+          <div class="flex gap-10 mt-5">
+            <button 
+              class="control-button toc mx-auto" 
+              (click)="gameService.onDefuseButtonClick()"
+              [upCustomTooltip]="'Красный'"
+            >
+              <img src="./assets/images/media-skip-backward-svgrepo-com.svg" alt="settings" class="min-w-[2rem] w-[2rem] brightness-130" />
+            </button>
+
+            <button 
+              class="control-button toc mx-auto" 
+              (click)="gameService.onDefuseButtonClick()"
+              [upCustomTooltip]="'Синий'"
+            >
+              <img src="./assets/images/media-skip-forward-svgrepo-com.svg" alt="settings" class="min-w-[2rem] w-[2rem] brightness-130" />
+            </button>
           </div>
         </div>
       </div>

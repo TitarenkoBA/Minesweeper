@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { GameService } from '@shared/services/game.service';
 import { RadioService } from '@shared/services/radio.service';
 import { SoundService } from '@shared/services/sound.service';
-import { CustomTooltipDirect } from '@shared/ui/tooltip/tooltip.directive';
+import { CustomTooltipDirect } from '@shared/directives/tooltip.directive';
 
 export interface GameSettings {
   rows: number;
@@ -24,6 +24,15 @@ export class SidebarComponent {
   public readonly radioService = inject(RadioService);
   onNewGameClick(): void {
     this.gameService.newGame();
+  }
+  onExplosionClick(): void {
+    const cell = this.gameService.cells().find(cell => cell.canBeDefused && !cell.isDefused);
+    if (cell) {
+      this.gameService.onCellClick(cell);
+    }
+  }
+  onDefuseClick(): void {
+    this.gameService.toggleDefuseActive();
   }
   toggleSound(): void {
     if (this.soundService.isSoundEnabled()) {

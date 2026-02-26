@@ -3,7 +3,7 @@
     <div class="toc min-h-[5rem] flex items-center justify-center uppercase text-[2rem] px-5 engraved-text">
       Minesweeper
     </div>
-    <div class="flex  w-full items-center gap-4 justify-center">
+    <div class="flex w-full items-center gap-4 justify-center">
       <div 
         class="toc px-3 text-[2rem] text-center max-w-[10rem] mx-auto engraved-text"
         [upCustomTooltip]="'Время от начала игры'"
@@ -15,7 +15,7 @@
         class="control-button toc mx-auto" (click)="onNewGameClick()"
         [upCustomTooltip]="'Начать игру заново'"
       >
-        <img src="./assets/images/icons8-refresh.svg" alt="bomb" class="min-w-[2rem] w-[2rem]" />
+        <img src="./assets/images/icons8-refresh.svg" alt="refresh" class="min-w-[2rem] w-[2rem]" />
       </button>
 
       <button 
@@ -49,6 +49,26 @@
         }
       </button>
     </div>
+    <div class="flex w-full items-center gap-4 justify-center">
+      <button 
+        class="control-button toc mx-auto" (click)="onExplosionClick()"
+        [upCustomTooltip]="'Помочь найти мину'"
+      >
+        <img src="./assets/images/help-operator-svgrepo-com.svg" alt="bomb" class="min-w-[2rem] w-[2rem]" />
+      </button>
+    
+      <button 
+        class="control-button toc mx-auto {{gameService.isDefuseActive() || gameService.isDefuseToolUsed() ? 'opacity-50' : ''}}" (click)="onDefuseClick()"
+        [upCustomTooltip]="
+          gameService.isDefuseToolUsed() 
+            ? 'Вы истратили набор для разминирования' 
+            : gameService.isDefuseActive() 
+              ? 'Деактивировать набор для обезвреживания' 
+              : 'Активировать набор для обезвреживания'"
+      >
+        <img src="./assets/images/tools-svgrepo-com.svg" alt="bomb" class="min-w-[2rem] w-[2rem]" />
+      </button>
+    </div>
   </div>
   <div id="sticky-sidebar-stuff">
     <div class="w-full toc p-4 inner-light-shadow flex items-start justify-center flex-row gap-10 lg:gap-0 lg:flex-col">
@@ -61,7 +81,7 @@
         </span>
       </div>
       <div class="flex items-center lg:hidden text-[1.5rem]">
-        <img src="./assets/images/black-bomb.svg" alt="mines" class="min-w-[2rem] w-[2rem] mr-1" />
+        <img src="./assets/images/set-boom-svgrepo-com.svg" alt="mines" class="min-w-[2rem] w-[2rem] mr-1" />
         {{ gameService.totalMines() }} 
       </div>
       <div class="status-line flex items-center hidden lg:flex w-full justify-between">
@@ -73,7 +93,7 @@
         </span>
       </div>
       <div class="flex items-center lg:hidden text-[1.5rem]">
-        <img src="./assets/images/nicubunu_Waving_white_flag.svg" alt="flags" class="min-w-[2rem] w-[2rem] mr-1" />
+        <img src="./assets/images/flag-svgrepo-com.svg" alt="flags" class="min-w-[2rem] w-[2rem] mr-1" />
         {{ gameService.flagsCount() }}
       </div>
       <div class="status-line flex items-center hidden lg:flex w-full justify-between">
@@ -85,7 +105,7 @@
         </span>
       </div>
       <div class="flex items-center lg:hidden text-[1.5rem]">
-        <img src="./assets/images/cherrybomb-remix.svg" alt="maybe-mines" class="min-w-[2rem] w-[2rem] mr-1" />
+        <img src="./assets/images/ball-boom-game-svgrepo-com.svg" alt="maybe-mines" class="min-w-[2rem] w-[2rem] mr-1" />
         {{ gameService.remainingMines() }}
       </div>
     </div>

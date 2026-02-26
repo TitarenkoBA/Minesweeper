@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 import { MediaQueryStore } from '@shared/stores/media-query-store';
 
-import { CustomTooltip } from './tooltip.component';
+import { CustomTooltip } from '../ui/tooltip/tooltip.component';
 
 @Directive({
   selector: '[upCustomTooltip]',

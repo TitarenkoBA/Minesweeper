@@ -60,6 +60,11 @@
   border-color: #02e921;
 }
 
+.mines-container div.revealed.defused {
+  background-color: #027c16;
+  border-color: #02e921;
+}
+
 .mines-container div.flagged:not(.revealed) {
   color: #f1d94b;
 }

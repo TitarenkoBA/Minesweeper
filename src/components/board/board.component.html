@@ -6,12 +6,13 @@
       [class.revealed]="cell.isRevealed" 
       [class.mine]="cell.isRevealed && cell.isMine" 
       [class.flagged]="cell.isFlagged"
+      [class.defused]="cell.isDefused"
       class="relative {{gameService.gameID() ? 'animate-bounce-in' : ''}}"
     >
       @if (cell.isRevealed && !cell.isMine && cell.adjacentMines > 0) {
         <span>{{ cell.adjacentMines }}</span>
       }
-      @if (cell.isRevealed && cell.isMine && !cell.isFlagged) {
+      @if (cell.isRevealed && cell.isMine && !cell.isFlagged && !cell.isDefused) {
         <span>
           @defer (on timer(2000ms)) {
             <img src="./assets/images/black-bomb.svg" alt="bomb" class="h-7.5 w-7.5 animate-bounce-in" />
@@ -21,6 +22,11 @@
           }
         </span>
       }
+      @if (cell.isRevealed && cell.isMine && !cell.isFlagged && cell.isDefused) {
+        <span>
+          <img src="./assets/images/black-bomb.svg" alt="bomb" class="h-7.5 w-7.5 animate-bounce-in" />
+        </span>
+      }
       @if (cell.isRevealed && cell.isMine && cell.isFlagged) {
         <span>
           <img src="./assets/images/black-bomb.svg" alt="bomb" class="h-7.5 w-7.5" />
@@ -28,7 +34,7 @@
       }
       @if (!cell.isRevealed && cell.isFlagged) {
         <span>
-          <img src="./assets/images/nicubunu_Waving_white_flag.svg" alt="bomb" class="h-7.5 w-7.5" />
+          <img src="./assets/images/flag-svgrepo-com-white.svg" alt="bomb" class="h-7.5 w-7.5" />
         </span>
       }
     </div>
