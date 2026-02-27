@@ -11,7 +11,7 @@
         <preference name="AutoHideSplashScreen" value="true" />
         <preference name="SplashScreenDelay" value="3000" />
         <preference name="AndroidWindowSplashScreenBackground" value="#2e2e2e" />
-        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="assets/images/royalty-free-bomb-stock-photography-cartoon-bomb.png" />
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="assets/images/cartoon-bomb.png" />
     </platform>
     <content src="browser/index.html" />
     <allow-intent href="http://*/*" />

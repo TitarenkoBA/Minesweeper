@@ -186,7 +186,14 @@ export class GameService {
       return;
     }
 
-    this.soundService.playSound('./assets/sounds/877427.mp3', this.volume());
+    if (
+      (isDefusingCell && this.isDefused() && this.defusingCell()) ||
+      (current.canBeDefused && !current.isDefused && !current.isFlagged && !this.isDefuseActive() && isHelpingCell)
+    ) {
+      this.soundService.playSound('./assets/sounds/defuse-valorant.mp3', this.volume());
+    } else {
+      this.soundService.playSound('./assets/sounds/877427.mp3', this.volume());
+    }
     
     this.startTimer();
 
@@ -204,8 +211,6 @@ export class GameService {
       this.defusingCell.set(null);
       this.isDefused.set(false);
       this.isDefuseActive.set(false);
-
-      this.soundService.playSound('./assets/sounds/1c7227d9b23f914.mp3', this.volume());
 
       if (cells.filter(c => c.isMine).every((c) => c.isRevealed || c.isDefused)) {
         this.gameWon.set(true);
@@ -225,8 +230,6 @@ export class GameService {
         isDefused: true,
       };
       this.cells.set(cells);
-
-      this.soundService.playSound('./assets/sounds/1c7227d9b23f914.mp3', this.volume());
 
       if (cells.filter(c => c.isMine).every((c) => c.isRevealed || c.isDefused)) {
         this.gameWon.set(true);
