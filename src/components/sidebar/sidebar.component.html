@@ -51,8 +51,15 @@
     </div>
     <div class="flex w-full items-center gap-4 justify-center">
       <button 
-        class="control-button toc mx-auto" (click)="onExplosionClick()"
-        [upCustomTooltip]="'Помочь найти мину'"
+        class="control-button toc mx-auto {{gameService.isInfoOpen() ? 'opacity-50' : ''}}" (click)="gameService.openInfo()"
+        [upCustomTooltip]="'Как играть'"
+      >
+        <img src="./assets/images/info.svg" alt="bomb" class="min-w-[2rem] w-[2rem]" />
+      </button>
+
+      <button 
+        class="control-button toc mx-auto {{gameService.isExplosionUsed() ? 'opacity-50' : ''}}" (click)="onExplosionClick()"
+        [upCustomTooltip]="gameService.isExplosionUsed() ? 'Вы уже использовали помощь' : 'Помочь найти мину'"
       >
         <img src="./assets/images/help-operator-svgrepo-com.svg" alt="bomb" class="min-w-[2rem] w-[2rem]" />
       </button>

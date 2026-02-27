@@ -177,6 +177,71 @@
       </div>
     }
 
+    @if (gameService.isDefuseOpen()) {
+      <div class="absolute lg:w-[20rem] w-full">
+        <div 
+          class="settings toc flex flex-col items-center p-4 animate-bounce-in"
+          (upClickOutside)="gameService.isDefuseOpen() ? gameService.closeDefuse() : undefined"
+        >
+          <div 
+            class="toc px-3 text-[2rem] text-center w-full overflow-hidden mx-auto engraved-text"
+          >
+            Разминирование
+          </div>
+          <h3 class="settings__title inner-light-shadow text-center">
+            Выберите провод, который хотите перерезать, для обезвреживания бомбы
+          </h3>
+          <div class="flex gap-10 mt-5">
+            <button 
+              class="control-button toc mx-auto" 
+              (click)="gameService.onDefuseButtonClick()"
+              [upCustomTooltip]="'Красный'"
+            >
+              <img src="./assets/images/media-skip-backward-svgrepo-com.svg" alt="settings" class="min-w-[2rem] w-[2rem] brightness-130" />
+            </button>
+
+            <button 
+              class="control-button toc mx-auto" 
+              (click)="gameService.onDefuseButtonClick()"
+              [upCustomTooltip]="'Синий'"
+            >
+              <img src="./assets/images/media-skip-forward-svgrepo-com.svg" alt="settings" class="min-w-[2rem] w-[2rem] brightness-130" />
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (gameService.isInfoOpen()) {
+      <div class="absolute lg:w-[40rem] w-full">
+        <div 
+          class="settings toc flex flex-col items-center p-4 animate-bounce-in"
+          (upClickOutside)="gameService.isInfoOpen() ? gameService.closeInfo() : undefined"
+        >
+          <div 
+            class="toc px-3 text-[2rem] text-center w-full overflow-hidden mx-auto engraved-text"
+          >
+            Как играть?
+          </div>
+          <div class ="toc p-1">
+            <p class="w-full text-white p-1">В настройках можно выбрать количество строк и колонок поля, а также количество мин</p>
+            <p class="w-full text-white p-1">Затем нужно открывать ячейки. Первый ход всегда Не на мину</p>
+            <p class="w-full text-white p-1">Цифра в ячейке показывает, сколько мин контактируют с этой ячейкой, то есть сколько мин в соседних ближайших ячейках</p>
+            <p class="w-full text-white p-1">Левая кнопка мыши, или простое касание, открывает ячейку</p>
+            <p class="w-full text-white p-1">Правая кнопка мыши, или долгое касание, помечает ячейку флагом. Помечайте флагом те ячейки, в которых, по вашему мнению, спрятаны мины</p>
+            <p class="w-full text-white p-1">Нажатие на кнопку помощи открывает одну мину, если она уже не открыта или не под флагом</p>
+            <p class="w-full text-white p-1">
+              Нажатие на кнопку активации набора для обезвреживания активирует режим, в котором при открывании ячейки с миной, она не взрывается.
+              Открывается окно, в котором вам предлагается выбрать провод, который нужно перерезать, для разминирования заряда.
+              Шанс 50%.
+            </p>
+            <p class="w-full text-white p-1">Удачи и хорошей игры!</p>
+          </div>
+          
+        </div>
+      </div>
+    }
+
     @if (gameService.gameWon()) {
       <div class="absolute lg:w-[20rem] w-full {{gameService.gameWon() ? '' : 'hidden'}}">
         <div 

@@ -11,11 +11,13 @@ import { GameSettings } from 'src/components/sidebar/sidebar.component';
 export class GameService {
   public readonly soundService = inject(SoundService);
   public readonly isSettingsOpen = signal(false);
+  public readonly isInfoOpen = signal(false);
   public readonly isDefuseOpen = signal(false);
   public readonly isDefuseActive = signal(false);
   public readonly defusingCell = signal<null|Cell>(null);
   public readonly isDefuseToolUsed = signal(false);
   public readonly isDefused = signal(false);
+  public readonly isExplosionUsed = signal(false);
   rows = signal(8);
   cols = signal(8);
   totalMines = signal(10);
@@ -71,6 +73,16 @@ export class GameService {
       setTimeout(() =>this.isSettingsOpen.set(false))
     }
   }
+  openInfo(): void {
+    if (!this.isInfoOpen()) {
+      setTimeout(() =>this.isInfoOpen.set(true))
+    }
+  }
+  closeInfo(): void {
+    if (this.isInfoOpen()) {
+      setTimeout(() =>this.isInfoOpen.set(false))
+    }
+  }
   toggleDefuseActive(): void {
     if (this.isDefuseActive()) {
       this.isDefuseActive.set(false)
@@ -100,7 +112,7 @@ export class GameService {
     this.isDefuseActive.set(false);
     this.closeDefuse();
     if (cell) {
-      setTimeout(() => this.onCellClick(cell, true));
+      setTimeout(() => this.onCellClick(cell, {isDefusingCell: true}));
     };
   }
   newGame(): void {
@@ -117,6 +129,7 @@ export class GameService {
     this.isDefuseToolUsed.set(false);
     this.isDefuseActive.set(false);
     this.isDefused.set(false);
+    this.isExplosionUsed.set(false);
     this.defusingCell.set(null);
     this.cells.set(this.createEmptyCells());
     setTimeout(() => this.gameID.set(uniqId()));
@@ -154,7 +167,9 @@ export class GameService {
     }
   }
 
-  onCellClick(cell: Cell, isDefusingCell = false): void {
+  onCellClick(cell: Cell, params?: {isDefusingCell?: boolean, isHelpingCell?: boolean}): void {
+    const {isDefusingCell = false, isHelpingCell = false} = params ?? {};
+
     if (this.gameOver() || this.gameWon()) {
       return;
     }
@@ -203,7 +218,7 @@ export class GameService {
       
     }
 
-    if (current.canBeDefused && !current.isDefused && !current.isFlagged && !this.isDefuseActive()) {
+    if (current.canBeDefused && !current.isDefused && !current.isFlagged && !this.isDefuseActive() && isHelpingCell) {
       cells[index] = {
         ...current,
         isRevealed: true,

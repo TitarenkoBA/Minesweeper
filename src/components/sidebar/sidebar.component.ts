@@ -28,7 +28,8 @@ export class SidebarComponent {
   onExplosionClick(): void {
     const cell = this.gameService.cells().find(cell => cell.canBeDefused && !cell.isDefused);
     if (cell) {
-      this.gameService.onCellClick(cell);
+      this.gameService.onCellClick(cell, {isHelpingCell: true});
+      this.gameService.isExplosionUsed.set(true);
     }
   }
   onDefuseClick(): void {
