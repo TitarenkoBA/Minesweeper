@@ -1,9 +1,11 @@
 import { Injectable, signal, inject, computed } from '@angular/core';
 import { SoundService } from './sound.service';
 import { Cell } from 'src/models/cell.model';
-import { uniqId } from '@shared/helpers';
+import { syncWithLocalStorage, uniqId } from '@shared/helpers';
 import { GameResultType, GameStatsEntry } from 'src/models/game-stats.model';
 import { GameSettings } from 'src/components/sidebar/sidebar.component';
+import { SupportedLocale } from './translation.service';
+import { MediaQueryStore } from '@shared/stores/media-query-store';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +21,10 @@ export class GameService {
   public readonly isDefused = signal(false);
   public readonly isExplosionUsed = signal(false);
   public readonly gameStatsSignal = signal<GameStatsEntry[]>([]);
+  public readonly isGameStatsOpen = signal(false);
+  public readonly isRussianLanguage = signal(false);
+  public readonly currentLocale = signal<SupportedLocale>('ru');
+  public readonly mediaQueryStore = inject(MediaQueryStore);
   rows = signal(8);
   cols = signal(8);
   totalMines = signal(10);
@@ -35,6 +41,10 @@ export class GameService {
   readonly flagsCount = computed(
     () => this.cells().filter((cell) => cell.isFlagged).length,
   );
+  readonly minCols = signal(2);
+  readonly maxCols = signal(20);
+  readonly minRows = signal(2);
+  readonly maxRows = signal(20);
   readonly minMines = signal(Math.max(this.cols(), this.rows()));
   readonly maxMines = signal(this.rows() * this.cols() - 2);
   readonly remainingMines = computed(
@@ -47,10 +57,34 @@ export class GameService {
   private gameStats: GameStatsEntry[] = [];
   private totalGames = 0;
   private readonly statsStorageKey = 'minesweeperGameStats';
+  private readonly localStorageEffect = syncWithLocalStorage('current_language', {
+    language: this.currentLocale
+  });
 
   constructor() {
     this.loadStats();
     this.newGame();
+
+    window.addEventListener('resize', () => {
+      const count = Math.floor(window.innerWidth / 200);
+      const rem = this.mediaQueryStore.isLg() ? 16 : 0.8*16;
+      const cellSize = 2.5*rem;
+      if (window.innerWidth < 1480) {
+        
+        const cols = Math.floor((window.innerWidth - (this.mediaQueryStore.isLg() ? 600 : 100)) / cellSize);
+        this.maxCols.set(cols);
+        if (this.cols() > cols) {
+          this.cols.set(cols);
+          this.onSettingsChange({
+            rows: this.rows(),
+            cols,
+            mines: this.totalMines(),
+            volume: this.volume(),
+            musicVolume: this.musicVolume(),
+          });
+        }
+      }
+  });
   }
 
   ngOnDestroy(): void {
@@ -82,6 +116,25 @@ export class GameService {
   closeInfo(): void {
     if (this.isInfoOpen()) {
       setTimeout(() =>this.isInfoOpen.set(false))
+    }
+  }
+  openGameStats(): void {
+    if (!this.isGameStatsOpen()) {
+      setTimeout(() =>this.isGameStatsOpen.set(true))
+    }
+  }
+  closeGameStats(): void {
+    if (this.isGameStatsOpen()) {
+      setTimeout(() =>this.isGameStatsOpen.set(false))
+    }
+  }
+  toggleLanguage(): void {
+    if (this.isRussianLanguage()) {
+      this.isRussianLanguage.set(false);
+      this.currentLocale.set('en');
+    } else {
+      this.isRussianLanguage.set(true)
+      this.currentLocale.set('ru');
     }
   }
   toggleDefuseActive(): void {

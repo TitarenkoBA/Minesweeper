@@ -1,3 +1,8 @@
 {
-  
+    "settings.title": "Settings",
+    "settings.rows_count": "Rows:",
+    "settings.cols_count": "Columns:",
+    "settings.mines_count": "Mines:",
+    "settings.effect_volume": "Effects volume",
+    "settings.music_volume": "Music volume"
 }

@@ -8,10 +8,11 @@ import { ClickOutside } from '@shared/directives';
 import { RadioService } from '@shared/services/radio.service';
 import { CustomTooltipDirect } from '@shared/directives/tooltip.directive';
 import { Loader } from '@shared/ui/loader/loader';
+import { TranslatePipe } from '@shared/pipes/translate.pipe';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, BoardComponent, SidebarComponent, ClickOutside, CustomTooltipDirect, Loader],
+  imports: [RouterOutlet, BoardComponent, SidebarComponent, ClickOutside, CustomTooltipDirect, Loader, TranslatePipe],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })

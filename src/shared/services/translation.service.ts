@@ -5,13 +5,15 @@ import { NavigationEnd,Router } from '@angular/router';
 
 import enTranslations from '../../locales/en.json';
 import ruTranslations from '../../locales/ru.json';
+import { syncWithLocalStorage } from '@shared/helpers';
+import { GameService } from './game.service';
 
 const SUPPORTED_LOCALES = [
   'ru',
   'en', // English
 ];
 
-type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
+export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
 
 type Translations = Record<string, string>;
 
@@ -33,22 +35,13 @@ type Translations = Record<string, string>;
   providedIn: 'root',
 })
 export class TranslationService {
-  private readonly router = inject(Router);
-
+  public readonly gameService = inject(GameService);
   private readonly translations: Record<SupportedLocale, Translations> = {
     ru: ruTranslations,
     en: enTranslations,
   };
 
-  private readonly currentLocale = signal<SupportedLocale>(this.getCurrentLocale());
-
-  public constructor() {
-    // Обновляем локаль при изменении роута
-    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
-      const locale = this.getCurrentLocale();
-      this.currentLocale.set(locale);
-    });
-  }
+  private readonly currentLocale = signal<SupportedLocale>('ru');
 
   /**
    * Получить перевод по ключу
@@ -57,7 +50,7 @@ export class TranslationService {
    * @returns переведенный текст
    */
   public translate(key: string, params?: Record<string, unknown>): string {
-    const locale = this.currentLocale();
+    const locale = this.gameService.currentLocale();
     const translations = this.translations[locale];
     let translation = translations[key] || key;
 
@@ -75,30 +68,13 @@ export class TranslationService {
     return translation;
   }
 
-  /**
-   * Получить текущую локаль
-   */
   public getLocale(): SupportedLocale {
     return this.currentLocale();
   }
 
-  /**
-   * Установить локаль
-   */
   public setLocale(locale: SupportedLocale): void {
     if (SUPPORTED_LOCALES.includes(locale)) {
       this.currentLocale.set(locale);
     }
-  }
-
-  /**
-   * Определить текущую локаль из URL
-   */
-  private getCurrentLocale(): SupportedLocale {
-    const pathMatch = window.location.pathname.match(/^\/([a-z]{2})(\/|$)/);
-    if (pathMatch && SUPPORTED_LOCALES.includes(pathMatch[1] as SupportedLocale)) {
-      return pathMatch[1] as SupportedLocale;
-    }
-    return 'ru'; // fallback на русский
   }
 }

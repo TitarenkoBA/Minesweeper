@@ -50,11 +50,32 @@
       </button>
     </div>
     <div class="flex w-full items-center gap-4 justify-center">
+      <div class="flex items-center justify-center group relative">
+        <button 
+          class="control-button toc mx-auto z-[1]" 
+          (click)="gameService.toggleLanguage()"
+          [upCustomTooltip]="gameService.isRussianLanguage() ? 'Сменить язык на английский' : 'Сменить язык на русский'"
+          >
+          <img src="./assets/images/language-svgrepo-com.svg" alt="settings" class="min-w-[2rem] w-[2rem] brightness-130" preload />
+        </button>
+        <div 
+          class="absolute left-[] toc !border-0 max-w-[3.5625rem] px-3 text-[1.8rem] text-center justify-center !shadow-none engraved-text transtition-all duration-300 group-hover:-translate-x-[100%]"
+        >
+          {{gameService.isRussianLanguage() ? 'RU' : 'EN'}}
+        </div>
+      </div>
       <button 
         class="control-button toc mx-auto {{gameService.isInfoOpen() ? 'opacity-50' : ''}}" (click)="gameService.openInfo()"
         [upCustomTooltip]="'Как играть'"
       >
         <img src="./assets/images/info.svg" alt="bomb" class="min-w-[2rem] w-[2rem]" preload />
+      </button>
+      
+      <button 
+        class="control-button toc mx-auto {{gameService.isGameStatsOpen() ? 'opacity-50' : ''}}" (click)="gameService.openGameStats()"
+        [upCustomTooltip]="gameService.isGameStatsOpen() ? 'Закрыть статистику игр' : 'Открыть статистику игр'"
+      >
+        <img src="./assets/images/statistic-grow-svgrepo-com.svg" alt="bomb" class="min-w-[2rem] w-[2rem]" preload />
       </button>
 
       <button 

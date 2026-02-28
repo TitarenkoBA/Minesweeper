@@ -1,5 +1,5 @@
 <main class="main w-full lg:min-w-[100vw] min-h-full h-fit lg:min-h-[100vh] flex flex-col items-center justify-start flex-1 lg:p-10 p-5 ">
-  @defer (on timer(2000)) {
+  @defer (on timer(1000)) {
     <div class="content flex flex-col-reverse lg:flex-row justify-center lg:gap-20 lg:max-w-[1440px] w-full relative mb-5">
       <mines-board class="flex flex-col items-center justify-center" />
 
@@ -14,35 +14,35 @@
             <div 
               class="toc px-3 text-[2rem] text-center w-full overflow-hidden mx-auto engraved-text"
             >
-              Настройки
+              {{"settings.title" | translate}}
             </div>
             <div class="settings__row">
               <div class="settings__label inner-light-shadow">
-                Строк: <span class="settings__value">{{ gameService.rows() }}</span>
+                {{"settings.rows_count" | translate}} <span class="settings__value">{{ gameService.rows() }}</span>
               </div>
               <input
                 type="range"
-                min="2"
-                max="20"
+                [min]="gameService.minRows()"
+                [max]="gameService.maxRows()"
                 [value]="gameService.rows()"
                 (input)="onRowsChange($event)"
               />
             </div>
             <div class="settings__row">
               <div class="settings__label inner-light-shadow">
-                Колонок: <span class="settings__value">{{ gameService.cols() }}</span>
+                {{"settings.cols_count" | translate}} <span class="settings__value">{{ gameService.cols() }}</span>
               </div>
               <input
                 type="range"
-                min="2"
-                max="20"
+                [min]="gameService.minCols()"
+                [max]="gameService.maxCols()"
                 [value]="gameService.cols()"
                 (input)="onColsChange($event)"
               />
             </div>
             <div class="settings__row">
               <div class="settings__label inner-light-shadow">
-                Мин: <span class="settings__value">{{ gameService.totalMines() }}</span>
+                {{"settings.mines_count" | translate}} <span class="settings__value">{{ gameService.totalMines() }}</span>
               </div>
               <input
                 type="range"
@@ -54,7 +54,7 @@
             </div>
             <div class="settings__row">
               <div class="settings__label inner-light-shadow">
-                Громкость эффектов
+                {{"settings.effect_volume" | translate}}
               </div>
               <input
                 type="range"
@@ -65,7 +65,7 @@
             </div>
             <div class="settings__row">
               <div class="settings__label inner-light-shadow">
-                Громкость музыки
+                {{"settings.music_volume" | translate}}
               </div>
               <input
                 type="range"
@@ -271,33 +271,38 @@
       }
     </div>
 
-    @if (gameService.gameStatsSignal().length) {
+    @if (gameService.isGameStatsOpen()) {
       @let gameStats = gameService.gameStatsSignal();
-      <div class="toc p-4 !h-fit !w-full lg:max-h-[17.5rem] max-h-[13.75rem] overflow-auto scrollbar-thin">
-        <table style="border-collapse: collapse; width: 100%; text-align: left;">
-          <thead>
-            <tr >
-              <th class="text-[#bbbbbb]">Время</th>
-              <th class="text-[#bbbbbb]">Колонок</th>
-              <th class="text-[#bbbbbb]">Рядов</th>
-              <th class="text-[#bbbbbb]">Мин</th>
-              <th class="text-[#bbbbbb]">Шагов</th>
-              <th class="text-[#bbbbbb]">Результат</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (item of gameStats; track item.id) {
-              <tr>
-                <td class="text-[#bbbbbb]">{{item.durationFormatted}}</td>
-                <td class="text-[#bbbbbb]">{{item.cols}}</td>
-                <td class="text-[#bbbbbb]">{{item.rows}}</td>
-                <td class="text-[#bbbbbb]">{{item.mines}}</td>
-                <td class="text-[#bbbbbb]">{{item.moves}}</td>
-                <td class="text-[#bbbbbb]">{{item.result === 'loss' ? 'Поражение' : 'Победа'}}</td>
+      <div class="absolute w-fit">
+        <div 
+          class="settings toc p-4 max-h-[80vh] overflow-auto scrollbar-thin animate-bounce-in"
+          (upClickOutside)="gameService.isGameStatsOpen() ? gameService.closeGameStats() : undefined"
+        >
+          <table style="border-collapse: collapse; width: 100%; text-align: left;">
+            <thead>
+              <tr >
+                <th class="text-[#bbbbbb] p-2">Время</th>
+                <th class="text-[#bbbbbb] p-2">Колонок</th>
+                <th class="text-[#bbbbbb] p-2">Рядов</th>
+                <th class="text-[#bbbbbb] p-2">Мин</th>
+                <th class="text-[#bbbbbb] p-2">Шагов</th>
+                <th class="text-[#bbbbbb] p-2">Результат</th>
               </tr>
-            }
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              @for (item of gameStats; track item.id) {
+                <tr>
+                  <td class="text-[#bbbbbb]">{{item.durationFormatted}}</td>
+                  <td class="text-[#bbbbbb]">{{item.cols}}</td>
+                  <td class="text-[#bbbbbb]">{{item.rows}}</td>
+                  <td class="text-[#bbbbbb]">{{item.mines}}</td>
+                  <td class="text-[#bbbbbb]">{{item.moves}}</td>
+                  <td class="text-[#bbbbbb] {{item.result === 'loss' ? 'status--lost' : 'status--won'}}">{{item.result === 'loss' ? 'Поражение' : 'Победа'}}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
       </div>
     }
   } @placeholder {

@@ -1,3 +1,8 @@
 {
- 
+    "settings.title": "Настройки",
+    "settings.rows_count": "Строк:",
+    "settings.cols_count": "Колонок:",
+    "settings.mines_count": "Мин:",
+    "settings.effect_volume": "Громкость эффектов",
+    "settings.music_volume": "Громкость музыки"
 }
