@@ -15,7 +15,7 @@
         class="control-button toc mx-auto" (click)="onNewGameClick()"
         [upCustomTooltip]="'Начать игру заново'"
       >
-        <img src="./assets/images/icons8-refresh.svg" alt="refresh" class="min-w-[2rem] w-[2rem]" />
+        <img src="./assets/images/icons8-refresh.svg" alt="refresh" class="min-w-[2rem] w-[2rem]" preload />
       </button>
 
       <button 
@@ -24,9 +24,9 @@
         [upCustomTooltip]="soundService.isSoundEnabled() ? 'Выключить звуковые эффекты' : 'Включить звуковые эффекты'"
       >
         @if (!soundService.isSoundEnabled()) {
-          <img src="./assets/images/speaker-low-volume.svg" alt="low-volume" class="min-w-[2rem] w-[2rem] grayscale-50" />
+          <img src="./assets/images/speaker-low-volume.svg" alt="low-volume" class="min-w-[2rem] w-[2rem] grayscale-50" preload />
         } @else {
-          <img src="./assets/images/speaker-high-volume.svg" alt="high-volume" class="min-w-[2rem] w-[2rem] grayscale-50" />
+          <img src="./assets/images/speaker-high-volume.svg" alt="high-volume" class="min-w-[2rem] w-[2rem] grayscale-50" preload />
         }
       </button>
 
@@ -35,7 +35,7 @@
         (click)="gameService.openSettings()"
         [upCustomTooltip]="'Открыть настройки'"
       >
-        <img src="./assets/images/icons8-settings.svg" alt="settings" class="min-w-[2rem] w-[2rem]" />
+        <img src="./assets/images/icons8-settings.svg" alt="settings" class="min-w-[2rem] w-[2rem]" preload />
       </button>
 
       <button 
@@ -54,14 +54,14 @@
         class="control-button toc mx-auto {{gameService.isInfoOpen() ? 'opacity-50' : ''}}" (click)="gameService.openInfo()"
         [upCustomTooltip]="'Как играть'"
       >
-        <img src="./assets/images/info.svg" alt="bomb" class="min-w-[2rem] w-[2rem]" />
+        <img src="./assets/images/info.svg" alt="bomb" class="min-w-[2rem] w-[2rem]" preload />
       </button>
 
       <button 
         class="control-button toc mx-auto {{gameService.isExplosionUsed() ? 'opacity-50' : ''}}" (click)="onExplosionClick()"
         [upCustomTooltip]="gameService.isExplosionUsed() ? 'Вы уже использовали помощь' : 'Помочь найти мину'"
       >
-        <img src="./assets/images/help-operator-svgrepo-com.svg" alt="bomb" class="min-w-[2rem] w-[2rem]" />
+        <img src="./assets/images/help-operator-svgrepo-com.svg" alt="bomb" class="min-w-[2rem] w-[2rem]" preload />
       </button>
     
       <button 
@@ -73,7 +73,7 @@
               ? 'Деактивировать набор для обезвреживания' 
               : 'Активировать набор для обезвреживания'"
       >
-        <img src="./assets/images/tools-svgrepo-com.svg" alt="bomb" class="min-w-[2rem] w-[2rem]" />
+        <img src="./assets/images/tools-svgrepo-com.svg" alt="bomb" class="min-w-[2rem] w-[2rem]" preload />
       </button>
     </div>
   </div>
@@ -88,7 +88,7 @@
         </span>
       </div>
       <div class="flex items-center lg:hidden text-[1.5rem]">
-        <img src="./assets/images/set-boom-svgrepo-com.svg" alt="mines" class="min-w-[2rem] w-[2rem] mr-1" />
+        <img src="./assets/images/set-boom-svgrepo-com.svg" alt="mines" class="min-w-[2rem] w-[2rem] mr-1" preload />
         {{ gameService.totalMines() }} 
       </div>
       <div class="status-line flex items-center hidden lg:flex w-full justify-between">
@@ -100,7 +100,7 @@
         </span>
       </div>
       <div class="flex items-center lg:hidden text-[1.5rem]">
-        <img src="./assets/images/flag-svgrepo-com.svg" alt="flags" class="min-w-[2rem] w-[2rem] mr-1" />
+        <img src="./assets/images/flag-svgrepo-com.svg" alt="flags" class="min-w-[2rem] w-[2rem] mr-1" preload />
         {{ gameService.flagsCount() }}
       </div>
       <div class="status-line flex items-center hidden lg:flex w-full justify-between">
@@ -112,7 +112,7 @@
         </span>
       </div>
       <div class="flex items-center lg:hidden text-[1.5rem]">
-        <img src="./assets/images/ball-boom-game-svgrepo-com.svg" alt="maybe-mines" class="min-w-[2rem] w-[2rem] mr-1" />
+        <img src="./assets/images/ball-boom-game-svgrepo-com.svg" alt="maybe-mines" class="min-w-[2rem] w-[2rem] mr-1" preload />
         {{ gameService.remainingMines() }}
       </div>
     </div>

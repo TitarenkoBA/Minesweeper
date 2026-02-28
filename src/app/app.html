@@ -1,272 +1,307 @@
-<main class="main w-full lg:min-w-[100vw] min-h-full h-fit lg:min-h-[100vh] flex items-start justify-center flex-1 lg:p-10 p-5">
-  <div class="content flex flex-col-reverse lg:flex-row justify-center lg:gap-20 lg:max-w-[1440px] w-full relative">
-    <mines-board class="flex flex-col items-center justify-center" />
+<main class="main w-full lg:min-w-[100vw] min-h-full h-fit lg:min-h-[100vh] flex flex-col items-center justify-start flex-1 lg:p-10 p-5 ">
+  @defer (on timer(2000)) {
+    <div class="content flex flex-col-reverse lg:flex-row justify-center lg:gap-20 lg:max-w-[1440px] w-full relative mb-5">
+      <mines-board class="flex flex-col items-center justify-center" />
 
-    <mines-sidebar class="w-full lg:w-[20rem]" />
+      <mines-sidebar class="w-full lg:w-[20rem]" />
 
-    @if (gameService.isSettingsOpen()) {
-      <div class="absolute lg:w-[20rem] w-full">
-        <div 
-          class="settings toc p-4 animate-bounce-in"
-          (upClickOutside)="gameService.isSettingsOpen() ? gameService.closeSettings() : undefined"
-        >
+      @if (gameService.isSettingsOpen()) {
+        <div class="absolute lg:w-[20rem] w-full">
           <div 
-            class="toc px-3 text-[2rem] text-center w-full overflow-hidden mx-auto engraved-text"
+            class="settings toc p-4 animate-bounce-in"
+            (upClickOutside)="gameService.isSettingsOpen() ? gameService.closeSettings() : undefined"
           >
-            Настройки
-          </div>
-          <div class="settings__row">
-            <div class="settings__label inner-light-shadow">
-              Строк: <span class="settings__value">{{ gameService.rows() }}</span>
+            <div 
+              class="toc px-3 text-[2rem] text-center w-full overflow-hidden mx-auto engraved-text"
+            >
+              Настройки
             </div>
-            <input
-              type="range"
-              min="2"
-              max="20"
-              [value]="gameService.rows()"
-              (input)="onRowsChange($event)"
-            />
-          </div>
-          <div class="settings__row">
-            <div class="settings__label inner-light-shadow">
-              Колонок: <span class="settings__value">{{ gameService.cols() }}</span>
+            <div class="settings__row">
+              <div class="settings__label inner-light-shadow">
+                Строк: <span class="settings__value">{{ gameService.rows() }}</span>
+              </div>
+              <input
+                type="range"
+                min="2"
+                max="20"
+                [value]="gameService.rows()"
+                (input)="onRowsChange($event)"
+              />
             </div>
-            <input
-              type="range"
-              min="2"
-              max="20"
-              [value]="gameService.cols()"
-              (input)="onColsChange($event)"
-            />
-          </div>
-          <div class="settings__row">
-            <div class="settings__label inner-light-shadow">
-              Мин: <span class="settings__value">{{ gameService.totalMines() }}</span>
+            <div class="settings__row">
+              <div class="settings__label inner-light-shadow">
+                Колонок: <span class="settings__value">{{ gameService.cols() }}</span>
+              </div>
+              <input
+                type="range"
+                min="2"
+                max="20"
+                [value]="gameService.cols()"
+                (input)="onColsChange($event)"
+              />
             </div>
-            <input
-              type="range"
-              [min]="gameService.minMines()"
-              [max]="gameService.maxMines()"
-              [value]="gameService.totalMines()"
-              (input)="onMinesChange($event)"
-            />
-          </div>
-          <div class="settings__row">
-            <div class="settings__label inner-light-shadow">
-              Громкость эффектов
+            <div class="settings__row">
+              <div class="settings__label inner-light-shadow">
+                Мин: <span class="settings__value">{{ gameService.totalMines() }}</span>
+              </div>
+              <input
+                type="range"
+                [min]="gameService.minMines()"
+                [max]="gameService.maxMines()"
+                [value]="gameService.totalMines()"
+                (input)="onMinesChange($event)"
+              />
             </div>
-            <input
-              type="range"
-              min="1"
-              [value]="gameService.volume()"
-              (input)="onVolumeChange($event)"
-            />
-          </div>
-          <div class="settings__row">
-            <div class="settings__label inner-light-shadow">
-              Громкость музыки
+            <div class="settings__row">
+              <div class="settings__label inner-light-shadow">
+                Громкость эффектов
+              </div>
+              <input
+                type="range"
+                min="1"
+                [value]="gameService.volume()"
+                (input)="onVolumeChange($event)"
+              />
             </div>
-            <input
-              type="range"
-              min="1"
-              [value]="gameService.musicVolume()"
-              (input)="onMusicVolumeChange($event)"
-            />
+            <div class="settings__row">
+              <div class="settings__label inner-light-shadow">
+                Громкость музыки
+              </div>
+              <input
+                type="range"
+                min="1"
+                [value]="gameService.musicVolume()"
+                (input)="onMusicVolumeChange($event)"
+              />
+            </div>
           </div>
         </div>
-      </div>
-    }
+      }
 
-    @if (radioService.isRadioOpen()) {
-      <div class="absolute lg:w-[20rem] w-full">
-        <div 
-          class="settings toc flex flex-col items-center p-4 animate-bounce-in"
-          (upClickOutside)="radioService.isRadioOpen() ? radioService.toggleRadio() : undefined"
-        >
+      @if (radioService.isRadioOpen()) {
+        <div class="absolute lg:w-[20rem] w-full">
           <div 
-            class="toc px-3 text-[2rem] text-center w-full overflow-hidden mx-auto engraved-text"
+            class="settings toc flex flex-col items-center p-4 animate-bounce-in"
+            (upClickOutside)="radioService.isRadioOpen() ? radioService.toggleRadio() : undefined"
           >
-            Радио
-          </div>
-          <h3 class="settings__title inner-light-shadow">
-            {{ radioService.playedStation().name }}
-          </h3>
-          <div class="flex gap-4 mt-5">
-            <button 
-              class="control-button toc mx-auto {{radioService.isFirstStation() ? 'opacity-50 cursor-default pointer-events-none' : ''}}" 
-              (click)="radioService.prevStation()"
-              [upCustomTooltip]="'Предыдущая станция'"
+            <div 
+              class="toc px-3 text-[2rem] text-center w-full overflow-hidden mx-auto engraved-text"
             >
-              <img src="./assets/images/media-skip-backward-svgrepo-com.svg" alt="settings" class="min-w-[2rem] w-[2rem] brightness-130" />
-            </button>
-
-            @if (radioService.isRadioPlayed()) {
+              Радио
+            </div>
+            <h3 class="settings__title inner-light-shadow">
+              {{ radioService.playedStation().name }}
+            </h3>
+            <div class="flex gap-4 mt-5">
               <button 
-                class="relative control-button toc mx-auto"
-                (click)="radioService.stopRadio()"
-                [upCustomTooltip]="'Выключить музыку'"
+                class="control-button toc mx-auto {{radioService.isFirstStation() ? 'opacity-50 cursor-default pointer-events-none' : ''}}" 
+                (click)="radioService.prevStation()"
+                [upCustomTooltip]="'Предыдущая станция'"
               >
-                <img src="./assets/images/media-playback-stop-svgrepo-com.svg" alt="stop-radio" class="min-w-[2rem] w-[2rem] brightness-130" preload />
+                <img src="./assets/images/media-skip-backward-svgrepo-com.svg" alt="settings" class="min-w-[2rem] w-[2rem] brightness-130" preload />
               </button>
-            } @else {
+
+              @if (radioService.isRadioPlayed()) {
+                <button 
+                  class="relative control-button toc mx-auto"
+                  (click)="radioService.stopRadio()"
+                  [upCustomTooltip]="'Выключить музыку'"
+                >
+                  <img src="./assets/images/media-playback-stop-svgrepo-com.svg" alt="stop-radio" class="min-w-[2rem] w-[2rem] brightness-130" preload />
+                </button>
+              } @else {
+                <button 
+                  class="control-button toc mx-auto" 
+                  (click)="radioService.playRadio()"
+                  [upCustomTooltip]="'Включить музыку'"
+                >
+                  <img src="./assets/images/media-playback-start-svgrepo-com.svg" alt="play-radio" class="min-w-[2rem] w-[2rem] brightness-130" preload />
+                </button>
+              }
+
+              <button 
+                class="control-button toc mx-auto {{radioService.isLastStation() ? 'opacity-50 cursor-default pointer-events-none' : ''}}" 
+                (click)="radioService.nextStation()"
+                [upCustomTooltip]="'Следующая станция'"
+              >
+                <img src="./assets/images/media-skip-forward-svgrepo-com.svg" alt="settings" class="min-w-[2rem] w-[2rem] brightness-130" preload />
+              </button>
+            </div>
+            
+            <div class="settings__row w-full">
+              <div class="settings__label inner-light-shadow">
+                Громкость музыки
+              </div>
+              <input
+                type="range"
+                min="1"
+                [value]="gameService.musicVolume()"
+                (input)="onMusicVolumeChange($event)"
+              />
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (gameService.isDefuseOpen()) {
+        <div class="absolute lg:w-[20rem] w-full">
+          <div 
+            class="settings toc flex flex-col items-center p-4 animate-bounce-in"
+            (upClickOutside)="gameService.isDefuseOpen() ? gameService.closeDefuse() : undefined"
+          >
+            <div 
+              class="toc px-3 text-[2rem] text-center w-full overflow-hidden mx-auto engraved-text"
+            >
+              Разминирование
+            </div>
+            <h3 class="settings__title inner-light-shadow text-center">
+              Выберите провод, который хотите перерезать, для обезвреживания бомбы
+            </h3>
+            <div class="flex gap-10 mt-5">
               <button 
                 class="control-button toc mx-auto" 
-                (click)="radioService.playRadio()"
-                [upCustomTooltip]="'Включить музыку'"
+                (click)="gameService.onDefuseButtonClick()"
+                [upCustomTooltip]="'Красный'"
               >
-                <img src="./assets/images/media-playback-start-svgrepo-com.svg" alt="play-radio" class="min-w-[2rem] w-[2rem] brightness-130" />
+                <img src="./assets/images/media-skip-backward-svgrepo-com.svg" alt="settings" class="min-w-[2rem] w-[2rem] brightness-130" preload />
               </button>
-            }
 
-            <button 
-              class="control-button toc mx-auto {{radioService.isLastStation() ? 'opacity-50 cursor-default pointer-events-none' : ''}}" 
-              (click)="radioService.nextStation()"
-              [upCustomTooltip]="'Следующая станция'"
-            >
-              <img src="./assets/images/media-skip-forward-svgrepo-com.svg" alt="settings" class="min-w-[2rem] w-[2rem] brightness-130" />
-            </button>
-          </div>
-          
-          <div class="settings__row w-full">
-            <div class="settings__label inner-light-shadow">
-              Громкость музыки
+              <button 
+                class="control-button toc mx-auto" 
+                (click)="gameService.onDefuseButtonClick()"
+                [upCustomTooltip]="'Синий'"
+              >
+                <img src="./assets/images/media-skip-forward-svgrepo-com.svg" alt="settings" class="min-w-[2rem] w-[2rem] brightness-130" preload />
+              </button>
             </div>
-            <input
-              type="range"
-              min="1"
-              [value]="gameService.musicVolume()"
-              (input)="onMusicVolumeChange($event)"
-            />
           </div>
         </div>
-      </div>
-    }
+      }
 
-    @if (gameService.isDefuseOpen()) {
-      <div class="absolute lg:w-[20rem] w-full">
-        <div 
-          class="settings toc flex flex-col items-center p-4 animate-bounce-in"
-          (upClickOutside)="gameService.isDefuseOpen() ? gameService.closeDefuse() : undefined"
-        >
+      @if (gameService.isDefuseOpen()) {
+        <div class="absolute lg:w-[20rem] w-full">
           <div 
-            class="toc px-3 text-[2rem] text-center w-full overflow-hidden mx-auto engraved-text"
+            class="settings toc flex flex-col items-center p-4 animate-bounce-in"
+            (upClickOutside)="gameService.isDefuseOpen() ? gameService.closeDefuse() : undefined"
           >
-            Разминирование
-          </div>
-          <h3 class="settings__title inner-light-shadow text-center">
-            Выберите провод, который хотите перерезать, для обезвреживания бомбы
-          </h3>
-          <div class="flex gap-10 mt-5">
-            <button 
-              class="control-button toc mx-auto" 
-              (click)="gameService.onDefuseButtonClick()"
-              [upCustomTooltip]="'Красный'"
+            <div 
+              class="toc px-3 text-[2rem] text-center w-full overflow-hidden mx-auto engraved-text"
             >
-              <img src="./assets/images/media-skip-backward-svgrepo-com.svg" alt="settings" class="min-w-[2rem] w-[2rem] brightness-130" />
-            </button>
+              Разминирование
+            </div>
+            <h3 class="settings__title inner-light-shadow text-center">
+              Выберите провод, который хотите перерезать, для обезвреживания бомбы
+            </h3>
+            <div class="flex gap-10 mt-5">
+              <button 
+                class="control-button toc mx-auto" 
+                (click)="gameService.onDefuseButtonClick()"
+                [upCustomTooltip]="'Красный'"
+              >
+                <img src="./assets/images/media-skip-backward-svgrepo-com.svg" alt="settings" class="min-w-[2rem] w-[2rem] brightness-130" preload />
+              </button>
 
-            <button 
-              class="control-button toc mx-auto" 
-              (click)="gameService.onDefuseButtonClick()"
-              [upCustomTooltip]="'Синий'"
-            >
-              <img src="./assets/images/media-skip-forward-svgrepo-com.svg" alt="settings" class="min-w-[2rem] w-[2rem] brightness-130" />
-            </button>
+              <button 
+                class="control-button toc mx-auto" 
+                (click)="gameService.onDefuseButtonClick()"
+                [upCustomTooltip]="'Синий'"
+              >
+                <img src="./assets/images/media-skip-forward-svgrepo-com.svg" alt="settings" class="min-w-[2rem] w-[2rem] brightness-130" preload />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    }
+      }
 
-    @if (gameService.isDefuseOpen()) {
-      <div class="absolute lg:w-[20rem] w-full">
-        <div 
-          class="settings toc flex flex-col items-center p-4 animate-bounce-in"
-          (upClickOutside)="gameService.isDefuseOpen() ? gameService.closeDefuse() : undefined"
-        >
+      @if (gameService.isInfoOpen()) {
+        <div class="absolute lg:w-[40rem] w-full">
           <div 
-            class="toc px-3 text-[2rem] text-center w-full overflow-hidden mx-auto engraved-text"
+            class="settings toc flex flex-col items-center p-4 animate-bounce-in"
+            (upClickOutside)="gameService.isInfoOpen() ? gameService.closeInfo() : undefined"
           >
-            Разминирование
-          </div>
-          <h3 class="settings__title inner-light-shadow text-center">
-            Выберите провод, который хотите перерезать, для обезвреживания бомбы
-          </h3>
-          <div class="flex gap-10 mt-5">
-            <button 
-              class="control-button toc mx-auto" 
-              (click)="gameService.onDefuseButtonClick()"
-              [upCustomTooltip]="'Красный'"
+            <div 
+              class="toc px-3 text-[2rem] text-center w-full overflow-hidden mx-auto engraved-text"
             >
-              <img src="./assets/images/media-skip-backward-svgrepo-com.svg" alt="settings" class="min-w-[2rem] w-[2rem] brightness-130" />
-            </button>
-
-            <button 
-              class="control-button toc mx-auto" 
-              (click)="gameService.onDefuseButtonClick()"
-              [upCustomTooltip]="'Синий'"
-            >
-              <img src="./assets/images/media-skip-forward-svgrepo-com.svg" alt="settings" class="min-w-[2rem] w-[2rem] brightness-130" />
-            </button>
+              Как играть?
+            </div>
+            <div class ="toc p-1 max-h-[60vh] overflow-auto scrollbar-thin">
+              <p class="w-full settings__title font-bold p-1">Настройка игры</p>
+              <p class="w-full text-[#bbbbbb] p-1">В меню настроек вы можете установить параметры игрового поля: количество строк, столбцов и мин.</p>
+              <p class="w-full settings__title font-bold p-1">Основной игровой процесс</p>
+              <p class="w-full text-[#bbbbbb] p-1">Игра начинается с первого безопасного хода — он гарантированно не приведёт к взрыву.</p>
+              <p class="w-full settings__title font-bold p-1">Система обозначений</p>
+              <p class="w-full text-[#bbbbbb] p-1">Цифры в ячейках указывают количество мин в соседних клетках.</p>
+              <p class="w-full settings__title font-bold p-1">Управление</p>
+              <p class="w-full text-[#bbbbbb] p-1">Левая кнопка мыши (или простое касание) — открывает ячейку</p>
+              <p class="w-full text-[#bbbbbb] p-1">Правая кнопка мыши (или длительное касание) — устанавливает флаг на предполагаемую мину</p>
+              <p class="w-full settings__title font-bold p-1">Дополнительные функции</p>
+              <p class="w-full text-[#bbbbbb] p-1">Кнопка помощи — автоматически открывает безопасную ячейку с миной (если она ещё не открыта и не помечена флагом)</p>
+              <p class="w-full text-[#bbbbbb] p-1">Набор для обезвреживания — активирует специальный режим. При открытии мины взрыв не происходит. Вместо этого появляется окно с выбором провода для обезвреживания. Вероятность успешного разминирования — 50%.</p>
+              <p class="w-full settings__title font-bold p-1">Желаем вам увлекательной игры и удачи в поиске мин!</p>
+            </div>
+            
           </div>
         </div>
-      </div>
-    }
+      }
 
-    @if (gameService.isInfoOpen()) {
-      <div class="absolute lg:w-[40rem] w-full">
-        <div 
-          class="settings toc flex flex-col items-center p-4 animate-bounce-in"
-          (upClickOutside)="gameService.isInfoOpen() ? gameService.closeInfo() : undefined"
-        >
+      @if (gameService.gameWon()) {
+        <div class="absolute lg:w-[20rem] w-full {{gameService.gameWon() ? '' : 'hidden'}}">
           <div 
-            class="toc px-3 text-[2rem] text-center w-full overflow-hidden mx-auto engraved-text"
+            class="status status--won flex flex-col items-center justify-center toc p-4 animate-bounce-in"
+            (upClickOutside)="gameService.newGame()"
           >
-            Как играть?
+            <img src="./assets/images/2336769_b9413.gif" alt="win" class="h-7.5 w-7.5 mr-2" preload />
+            <span>Победа!</span>
+            <span>Все мины найдены.</span>
           </div>
-          <div class ="toc p-1">
-            <p class="w-full text-white p-1">В настройках можно выбрать количество строк и колонок поля, а также количество мин</p>
-            <p class="w-full text-white p-1">Затем нужно открывать ячейки. Первый ход всегда Не на мину</p>
-            <p class="w-full text-white p-1">Цифра в ячейке показывает, сколько мин контактируют с этой ячейкой, то есть сколько мин в соседних ближайших ячейках</p>
-            <p class="w-full text-white p-1">Левая кнопка мыши, или простое касание, открывает ячейку</p>
-            <p class="w-full text-white p-1">Правая кнопка мыши, или долгое касание, помечает ячейку флагом. Помечайте флагом те ячейки, в которых, по вашему мнению, спрятаны мины</p>
-            <p class="w-full text-white p-1">Нажатие на кнопку помощи открывает одну мину, если она уже не открыта или не под флагом</p>
-            <p class="w-full text-white p-1">
-              Нажатие на кнопку активации набора для обезвреживания активирует режим, в котором при открывании ячейки с миной, она не взрывается.
-              Открывается окно, в котором вам предлагается выбрать провод, который нужно перерезать, для разминирования заряда.
-              Шанс 50%.
-            </p>
-            <p class="w-full text-white p-1">Удачи и хорошей игры!</p>
+        </div>
+      }
+
+      @if (gameService.gameOver() && !gameService.gameWon()) {
+        <div class="absolute lg:w-[20rem] w-full {{gameService.gameOver() && !gameService.gameWon() ? '' : 'hidden'}}">
+          <div 
+            class="status status--lost flex flex-col items-center justify-center toc p-4 animate-bounce-in"
+            (upClickOutside)="gameService.newGame()"
+          >
+            <img src="./assets/images/boom-cat.gif" alt="lose" class="h-7.5 w-7.5 mr-2" preload />
+            <span>Поражение.</span>
+            <span>Вы подорвались на мине.</span>
           </div>
-          
         </div>
-      </div>
-    }
+      }
+    </div>
 
-    @if (gameService.gameWon()) {
-      <div class="absolute lg:w-[20rem] w-full {{gameService.gameWon() ? '' : 'hidden'}}">
-        <div 
-          class="status status--won flex flex-col items-center justify-center toc p-4 animate-bounce-in"
-          (upClickOutside)="gameService.newGame()"
-        >
-          <img src="./assets/images/2336769_b9413.gif" alt="win" class="h-7.5 w-7.5 mr-2" />
-          <span>Победа!</span>
-          <span>Все мины найдены.</span>
-        </div>
+    @if (gameService.gameStatsSignal().length) {
+      @let gameStats = gameService.gameStatsSignal();
+      <div class="toc p-4 !h-fit !w-full lg:max-h-[17.5rem] max-h-[13.75rem] overflow-auto scrollbar-thin">
+        <table style="border-collapse: collapse; width: 100%; text-align: left;">
+          <thead>
+            <tr >
+              <th class="text-[#bbbbbb]">Время</th>
+              <th class="text-[#bbbbbb]">Колонок</th>
+              <th class="text-[#bbbbbb]">Рядов</th>
+              <th class="text-[#bbbbbb]">Мин</th>
+              <th class="text-[#bbbbbb]">Шагов</th>
+              <th class="text-[#bbbbbb]">Результат</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of gameStats; track item.id) {
+              <tr>
+                <td class="text-[#bbbbbb]">{{item.durationFormatted}}</td>
+                <td class="text-[#bbbbbb]">{{item.cols}}</td>
+                <td class="text-[#bbbbbb]">{{item.rows}}</td>
+                <td class="text-[#bbbbbb]">{{item.mines}}</td>
+                <td class="text-[#bbbbbb]">{{item.moves}}</td>
+                <td class="text-[#bbbbbb]">{{item.result === 'loss' ? 'Поражение' : 'Победа'}}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
       </div>
     }
-
-    @if (gameService.gameOver() && !gameService.gameWon()) {
-      <div class="absolute lg:w-[20rem] w-full {{gameService.gameOver() && !gameService.gameWon() ? '' : 'hidden'}}">
-        <div 
-          class="status status--lost flex flex-col items-center justify-center toc p-4 animate-bounce-in"
-          (upClickOutside)="gameService.newGame()"
-        >
-          <img src="./assets/images/boom-cat.gif" alt="lose" class="h-7.5 w-7.5 mr-2" />
-          <span>Поражение.</span>
-          <span>Вы подорвались на мине.</span>
-        </div>
-      </div>
-    }
-  </div>
+  } @placeholder {
+    <loader />
+  }
 </main>
 <router-outlet />

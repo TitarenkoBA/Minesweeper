@@ -7,10 +7,11 @@ import { GameService } from '@shared/services/game.service';
 import { ClickOutside } from '@shared/directives';
 import { RadioService } from '@shared/services/radio.service';
 import { CustomTooltipDirect } from '@shared/directives/tooltip.directive';
+import { Loader } from '@shared/ui/loader/loader';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, BoardComponent, SidebarComponent, ClickOutside, CustomTooltipDirect],
+  imports: [RouterOutlet, BoardComponent, SidebarComponent, ClickOutside, CustomTooltipDirect, Loader],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })

@@ -15,26 +15,26 @@
       @if (cell.isRevealed && cell.isMine && !cell.isFlagged && !cell.isDefused) {
         <span>
           @defer (on timer(2000ms)) {
-            <img src="./assets/images/black-bomb.svg" alt="bomb" class="h-7.5 w-7.5 animate-bounce-in" />
+            <img src="./assets/images/black-bomb.svg" alt="bomb" class="h-7.5 w-7.5 animate-bounce-in" preload />
           } @placeholder {
           <img src="./assets/images/placidplace-explosion-14627_512.gif" alt="bomb"
-            class="absolute max-w-[10rem] -left-[3.5rem] bottom-0" />
+            class="absolute max-w-[10rem] -left-[3.5rem] bottom-0" preload />
           }
         </span>
       }
       @if (cell.isRevealed && cell.isMine && !cell.isFlagged && cell.isDefused) {
         <span>
-          <img src="./assets/images/black-bomb.svg" alt="bomb" class="h-7.5 w-7.5 animate-bounce-in" />
+          <img src="./assets/images/black-bomb.svg" alt="bomb" class="h-7.5 w-7.5 animate-bounce-in" preload />
         </span>
       }
       @if (cell.isRevealed && cell.isMine && cell.isFlagged) {
         <span>
-          <img src="./assets/images/black-bomb.svg" alt="bomb" class="h-7.5 w-7.5" />
+          <img src="./assets/images/black-bomb.svg" alt="bomb" class="h-7.5 w-7.5" preload />
         </span>
       }
       @if (!cell.isRevealed && cell.isFlagged) {
         <span>
-          <img src="./assets/images/flag-svgrepo-com-white.svg" alt="bomb" class="h-7.5 w-7.5" />
+          <img src="./assets/images/flag-svgrepo-com-white.svg" alt="bomb" class="h-7.5 w-7.5" preload />
         </span>
       }
     </div>

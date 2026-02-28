@@ -18,6 +18,7 @@ export class GameService {
   public readonly isDefuseToolUsed = signal(false);
   public readonly isDefused = signal(false);
   public readonly isExplosionUsed = signal(false);
+  public readonly gameStatsSignal = signal<GameStatsEntry[]>([]);
   rows = signal(8);
   cols = signal(8);
   totalMines = signal(10);
@@ -456,6 +457,14 @@ export class GameService {
 
     this.stopTimer();
 
+    const minutes = Math.floor(this.gameDurationSeconds() / 60);
+    const seconds = this.gameDurationSeconds() % 60;
+
+    const m = minutes.toString().padStart(2, '0');
+    const s = seconds.toString().padStart(2, '0');
+
+    const durationFormatted = `${m}:${s}`
+
     const minePositions = cells
       .filter((c) => c.isMine)
       .map((c) => c.id);
@@ -470,12 +479,20 @@ export class GameService {
       minePositions,
       finishedAt: finishedAt.toISOString(),
       durationMs,
+      durationFormatted,
     };
 
-    this.gameStats.push(entry);
+    this.addElementToStats(entry);
     this.totalGames += 1;
     this.saveStats();
   }
+  
+  private addElementToStats(item: GameStatsEntry) {
+    if (this.gameStats.length >= 20) {
+      this.gameStats.pop(); 
+    }
+    this.gameStats.unshift(item); 
+  } 
 
   public loadStats(): void {
     if (typeof window === 'undefined' || !window.localStorage) {
@@ -495,6 +512,7 @@ export class GameService {
 
       if (Array.isArray(parsed.games)) {
         this.gameStats = parsed.games;
+        this.gameStatsSignal.set(parsed.games);
       }
 
       if (typeof parsed.totalGames === 'number') {
@@ -505,6 +523,7 @@ export class GameService {
     } catch {
       this.gameStats = [];
       this.totalGames = 0;
+      this.gameStatsSignal.set([]);
     }
   }
 
@@ -515,7 +534,7 @@ export class GameService {
 
     const payload = {
       totalGames: this.totalGames,
-      // games: this.gameStats,
+      games: this.gameStats,
     };
 
     window.localStorage.setItem(

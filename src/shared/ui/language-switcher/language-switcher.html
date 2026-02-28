@@ -52,7 +52,7 @@
             (click)="select(lang.code)"
           >
             
-            <img [src]="lang.flag" alt="flag" class="h-[0.75rem] w-[1.125rem] lg:h-[1.0625rem] lg:w-[1.625rem]" />
+            <img [src]="lang.flag" alt="flag" class="h-[0.75rem] w-[1.125rem] lg:h-[1.0625rem] lg:w-[1.625rem]" preload />
             <span class="text-xxs text-gray lg:text-sm" [class.text-white]="selected === lang.code">
               {{ lang.label }}</span
             >

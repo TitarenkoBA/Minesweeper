@@ -10,5 +10,6 @@ export interface GameStatsEntry {
   minePositions: number[];
   finishedAt: string;
   durationMs: number;
+  durationFormatted: string;
 }
 
