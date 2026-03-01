@@ -22,7 +22,6 @@ export class GameService {
   public readonly isExplosionUsed = signal(false);
   public readonly gameStatsSignal = signal<GameStatsEntry[]>([]);
   public readonly isGameStatsOpen = signal(false);
-  public readonly isRussianLanguage = signal(false);
   public readonly currentLocale = signal<SupportedLocale>('ru');
   public readonly mediaQueryStore = inject(MediaQueryStore);
   rows = signal(8);
@@ -65,13 +64,17 @@ export class GameService {
     this.loadStats();
     this.newGame();
 
-    window.addEventListener('resize', () => {
-      const count = Math.floor(window.innerWidth / 200);
+    this.calculateColsOnResize();
+    window.addEventListener('resize', () => this.calculateColsOnResize());
+  }
+
+  private calculateColsOnResize(): void {
+    requestAnimationFrame(() => {
       const rem = this.mediaQueryStore.isLg() ? 16 : 0.8*16;
       const cellSize = 2.5*rem;
-      if (window.innerWidth < 1480) {
-        
-        const cols = Math.floor((window.innerWidth - (this.mediaQueryStore.isLg() ? 600 : 100)) / cellSize);
+      const width = document?.documentElement?.clientWidth;
+      if (width && width < 1480) {
+        const cols = Math.floor((width - (this.mediaQueryStore.isLg() ? 600 : 100)) / cellSize);
         this.maxCols.set(cols);
         if (this.cols() > cols) {
           this.cols.set(cols);
@@ -84,7 +87,7 @@ export class GameService {
           });
         }
       }
-  });
+    })
   }
 
   ngOnDestroy(): void {
@@ -129,11 +132,9 @@ export class GameService {
     }
   }
   toggleLanguage(): void {
-    if (this.isRussianLanguage()) {
-      this.isRussianLanguage.set(false);
+    if (this.currentLocale() === 'ru') {
       this.currentLocale.set('en');
     } else {
-      this.isRussianLanguage.set(true)
       this.currentLocale.set('ru');
     }
   }

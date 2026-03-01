@@ -3,6 +3,7 @@ import { GameService } from '@shared/services/game.service';
 import { RadioService } from '@shared/services/radio.service';
 import { SoundService } from '@shared/services/sound.service';
 import { CustomTooltipDirect } from '@shared/directives/tooltip.directive';
+import { TranslatePipe } from '@shared/pipes/translate.pipe';
 
 export interface GameSettings {
   rows: number;
@@ -16,7 +17,7 @@ export interface GameSettings {
   selector: 'mines-sidebar',
   standalone: true,
   templateUrl: './sidebar.component.html',
-  imports: [CustomTooltipDirect]
+  imports: [CustomTooltipDirect, TranslatePipe]
 })
 export class SidebarComponent {
   public readonly gameService = inject(GameService);

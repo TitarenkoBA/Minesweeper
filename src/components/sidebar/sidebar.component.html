@@ -6,14 +6,14 @@
     <div class="flex w-full items-center gap-4 justify-center">
       <div 
         class="toc px-3 text-[2rem] text-center max-w-[10rem] mx-auto engraved-text"
-        [upCustomTooltip]="'Время от начала игры'"
+        [upCustomTooltip]="'common.time' | translate"
       >
         {{ formattedDuration }}
       </div>
 
       <button 
         class="control-button toc mx-auto" (click)="onNewGameClick()"
-        [upCustomTooltip]="'Начать игру заново'"
+        [upCustomTooltip]="'common.reset' | translate"
       >
         <img src="./assets/images/icons8-refresh.svg" alt="refresh" class="min-w-[2rem] w-[2rem]" preload />
       </button>
@@ -21,7 +21,7 @@
       <button 
         class="control-button toc mx-auto {{soundService.isSoundEnabled() ? '' : 'opacity-50'}}" 
         (click)="toggleSound()"
-        [upCustomTooltip]="soundService.isSoundEnabled() ? 'Выключить звуковые эффекты' : 'Включить звуковые эффекты'"
+        [upCustomTooltip]="(soundService.isSoundEnabled() ? 'common.disable_sound_effects' : 'common.enable_sound_effects') | translate"
       >
         @if (!soundService.isSoundEnabled()) {
           <img src="./assets/images/speaker-low-volume.svg" alt="low-volume" class="min-w-[2rem] w-[2rem] grayscale-50" preload />
@@ -33,7 +33,7 @@
       <button 
         class="control-button toc mx-auto {{gameService.isSettingsOpen() ? 'opacity-50' : ''}}" 
         (click)="gameService.openSettings()"
-        [upCustomTooltip]="'Открыть настройки'"
+        [upCustomTooltip]="'common.open_settings' | translate"
       >
         <img src="./assets/images/icons8-settings.svg" alt="settings" class="min-w-[2rem] w-[2rem]" preload />
       </button>
@@ -41,7 +41,7 @@
       <button 
         class="relative control-button toc mx-auto {{radioService.isRadioOpen() ? 'opacity-50' : ''}}" 
         (click)="radioService.toggleRadio()"
-        [upCustomTooltip]="'Открыть радио'"
+        [upCustomTooltip]="'common.open_radio' | translate"
       >
         <img src="./assets/images/media-color-2-headphones-svgrepo-com.svg" alt="stop-radio" class="min-w-[2rem] w-[2rem]" preload />
         @if (radioService.isRadioPlayed()) {
@@ -50,37 +50,23 @@
       </button>
     </div>
     <div class="flex w-full items-center gap-4 justify-center">
-      <div class="flex items-center justify-center group relative">
-        <button 
-          class="control-button toc mx-auto z-[1]" 
-          (click)="gameService.toggleLanguage()"
-          [upCustomTooltip]="gameService.isRussianLanguage() ? 'Сменить язык на английский' : 'Сменить язык на русский'"
-          >
-          <img src="./assets/images/language-svgrepo-com.svg" alt="settings" class="min-w-[2rem] w-[2rem] brightness-130" preload />
-        </button>
-        <div 
-          class="absolute left-[] toc !border-0 max-w-[3.5625rem] px-3 text-[1.8rem] text-center justify-center !shadow-none engraved-text transtition-all duration-300 group-hover:-translate-x-[100%]"
-        >
-          {{gameService.isRussianLanguage() ? 'RU' : 'EN'}}
-        </div>
-      </div>
       <button 
         class="control-button toc mx-auto {{gameService.isInfoOpen() ? 'opacity-50' : ''}}" (click)="gameService.openInfo()"
-        [upCustomTooltip]="'Как играть'"
+        [upCustomTooltip]="'common.how_to_play' | translate"
       >
         <img src="./assets/images/info.svg" alt="bomb" class="min-w-[2rem] w-[2rem]" preload />
       </button>
       
       <button 
         class="control-button toc mx-auto {{gameService.isGameStatsOpen() ? 'opacity-50' : ''}}" (click)="gameService.openGameStats()"
-        [upCustomTooltip]="gameService.isGameStatsOpen() ? 'Закрыть статистику игр' : 'Открыть статистику игр'"
+        [upCustomTooltip]="(gameService.isGameStatsOpen() ? 'common.close_statistic' : 'common.open_statistic') | translate"
       >
         <img src="./assets/images/statistic-grow-svgrepo-com.svg" alt="bomb" class="min-w-[2rem] w-[2rem]" preload />
       </button>
 
       <button 
         class="control-button toc mx-auto {{gameService.isExplosionUsed() ? 'opacity-50' : ''}}" (click)="onExplosionClick()"
-        [upCustomTooltip]="gameService.isExplosionUsed() ? 'Вы уже использовали помощь' : 'Помочь найти мину'"
+        [upCustomTooltip]="(gameService.isExplosionUsed() ? 'common.help_used' : 'common.help') | translate"
       >
         <img src="./assets/images/help-operator-svgrepo-com.svg" alt="bomb" class="min-w-[2rem] w-[2rem]" preload />
       </button>
@@ -88,11 +74,12 @@
       <button 
         class="control-button toc mx-auto {{gameService.isDefuseActive() || gameService.isDefuseToolUsed() ? 'opacity-50' : ''}}" (click)="onDefuseClick()"
         [upCustomTooltip]="
-          gameService.isDefuseToolUsed() 
-            ? 'Вы истратили набор для разминирования' 
+          (gameService.isDefuseToolUsed() 
+            ? 'common.defuse_kit_used' 
             : gameService.isDefuseActive() 
-              ? 'Деактивировать набор для обезвреживания' 
-              : 'Активировать набор для обезвреживания'"
+              ? 'common.defuse_kit_disable' 
+              : 'common.defuse_kit_enable') 
+          | translate"
       >
         <img src="./assets/images/tools-svgrepo-com.svg" alt="bomb" class="min-w-[2rem] w-[2rem]" preload />
       </button>
@@ -102,7 +89,7 @@
     <div class="w-full toc p-4 inner-light-shadow flex items-start justify-center flex-row gap-10 lg:gap-0 lg:flex-col">
       <div class="status-line flex items-center hidden lg:flex w-full justify-between">
         <span>
-          Мины всего: 
+          {{'common.total_mines' | translate}} 
         </span>
         <span>
           {{ gameService.totalMines() }} 
@@ -114,7 +101,7 @@
       </div>
       <div class="status-line flex items-center hidden lg:flex w-full justify-between">
         <span>
-          Поставлено флагов: 
+          {{'common.total_flags' | translate}}  
         </span>
         <span>
           {{ gameService.flagsCount() }}
@@ -126,7 +113,7 @@
       </div>
       <div class="status-line flex items-center hidden lg:flex w-full justify-between">
         <span>
-          Предполагаемых мин без флагов: 
+          {{'common.total_mines_without_flags' | translate}} 
         </span>
         <span>
           {{ gameService.remainingMines() }}

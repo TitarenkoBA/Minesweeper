@@ -74,6 +74,24 @@
                 (input)="onMusicVolumeChange($event)"
               />
             </div>
+            <div class="flex items-center justify-center group relative w-auto">
+              <div class="flex items-center justify-center group relative w-fit">
+                <div 
+                  [style]="gameService.currentLocale() === 'ru' ? 'translate: 100%' : ''"
+                  class="toc !border-0 max-w-[3.5625rem] px-3 text-[1.8rem] text-center justify-center !shadow-none engraved-text transtition-all duration-300 uppercase"
+                >
+                  {{gameService.currentLocale()}}
+                </div>
+                <button 
+                  class="control-button toc mx-auto z-[1]" 
+                  (click)="gameService.toggleLanguage()"
+                  [upCustomTooltip]="'settings.change_language' | translate"
+                  [style]="gameService.currentLocale() === 'ru' ? 'translate: -100%' : ''"
+                >
+                  <img src="./assets/images/language-svgrepo-com.svg" alt="settings" class="min-w-[2rem] w-[2rem] brightness-130" preload />
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       }
@@ -87,7 +105,7 @@
             <div 
               class="toc px-3 text-[2rem] text-center w-full overflow-hidden mx-auto engraved-text"
             >
-              Радио
+              {{"radio.title" | translate}}
             </div>
             <h3 class="settings__title inner-light-shadow">
               {{ radioService.playedStation().name }}
@@ -96,7 +114,7 @@
               <button 
                 class="control-button toc mx-auto {{radioService.isFirstStation() ? 'opacity-50 cursor-default pointer-events-none' : ''}}" 
                 (click)="radioService.prevStation()"
-                [upCustomTooltip]="'Предыдущая станция'"
+                [upCustomTooltip]="'radio.prev_station' | translate"
               >
                 <img src="./assets/images/media-skip-backward-svgrepo-com.svg" alt="settings" class="min-w-[2rem] w-[2rem] brightness-130" preload />
               </button>
@@ -105,7 +123,7 @@
                 <button 
                   class="relative control-button toc mx-auto"
                   (click)="radioService.stopRadio()"
-                  [upCustomTooltip]="'Выключить музыку'"
+                  [upCustomTooltip]="'radio.disable_music' | translate"
                 >
                   <img src="./assets/images/media-playback-stop-svgrepo-com.svg" alt="stop-radio" class="min-w-[2rem] w-[2rem] brightness-130" preload />
                 </button>
@@ -113,7 +131,7 @@
                 <button 
                   class="control-button toc mx-auto" 
                   (click)="radioService.playRadio()"
-                  [upCustomTooltip]="'Включить музыку'"
+                  [upCustomTooltip]="'radio.enable_music' | translate"
                 >
                   <img src="./assets/images/media-playback-start-svgrepo-com.svg" alt="play-radio" class="min-w-[2rem] w-[2rem] brightness-130" preload />
                 </button>
@@ -122,7 +140,7 @@
               <button 
                 class="control-button toc mx-auto {{radioService.isLastStation() ? 'opacity-50 cursor-default pointer-events-none' : ''}}" 
                 (click)="radioService.nextStation()"
-                [upCustomTooltip]="'Следующая станция'"
+                [upCustomTooltip]="'radio.next_station' | translate"
               >
                 <img src="./assets/images/media-skip-forward-svgrepo-com.svg" alt="settings" class="min-w-[2rem] w-[2rem] brightness-130" preload />
               </button>
@@ -130,7 +148,7 @@
             
             <div class="settings__row w-full">
               <div class="settings__label inner-light-shadow">
-                Громкость музыки
+                {{'radio.music_volume' | translate}}
               </div>
               <input
                 type="range"
@@ -152,16 +170,15 @@
             <div 
               class="toc px-3 text-[2rem] text-center w-full overflow-hidden mx-auto engraved-text"
             >
-              Разминирование
+              {{'defuse.title' | translate}}
             </div>
             <h3 class="settings__title inner-light-shadow text-center">
-              Выберите провод, который хотите перерезать, для обезвреживания бомбы
+              {{'defuse.description' | translate}}
             </h3>
             <div class="flex gap-10 mt-5">
               <button 
                 class="control-button toc mx-auto" 
                 (click)="gameService.onDefuseButtonClick()"
-                [upCustomTooltip]="'Красный'"
               >
                 <img src="./assets/images/media-skip-backward-svgrepo-com.svg" alt="settings" class="min-w-[2rem] w-[2rem] brightness-130" preload />
               </button>
@@ -169,42 +186,6 @@
               <button 
                 class="control-button toc mx-auto" 
                 (click)="gameService.onDefuseButtonClick()"
-                [upCustomTooltip]="'Синий'"
-              >
-                <img src="./assets/images/media-skip-forward-svgrepo-com.svg" alt="settings" class="min-w-[2rem] w-[2rem] brightness-130" preload />
-              </button>
-            </div>
-          </div>
-        </div>
-      }
-
-      @if (gameService.isDefuseOpen()) {
-        <div class="absolute lg:w-[20rem] w-full">
-          <div 
-            class="settings toc flex flex-col items-center p-4 animate-bounce-in"
-            (upClickOutside)="gameService.isDefuseOpen() ? gameService.closeDefuse() : undefined"
-          >
-            <div 
-              class="toc px-3 text-[2rem] text-center w-full overflow-hidden mx-auto engraved-text"
-            >
-              Разминирование
-            </div>
-            <h3 class="settings__title inner-light-shadow text-center">
-              Выберите провод, который хотите перерезать, для обезвреживания бомбы
-            </h3>
-            <div class="flex gap-10 mt-5">
-              <button 
-                class="control-button toc mx-auto" 
-                (click)="gameService.onDefuseButtonClick()"
-                [upCustomTooltip]="'Красный'"
-              >
-                <img src="./assets/images/media-skip-backward-svgrepo-com.svg" alt="settings" class="min-w-[2rem] w-[2rem] brightness-130" preload />
-              </button>
-
-              <button 
-                class="control-button toc mx-auto" 
-                (click)="gameService.onDefuseButtonClick()"
-                [upCustomTooltip]="'Синий'"
               >
                 <img src="./assets/images/media-skip-forward-svgrepo-com.svg" alt="settings" class="min-w-[2rem] w-[2rem] brightness-130" preload />
               </button>
@@ -222,22 +203,22 @@
             <div 
               class="toc px-3 text-[2rem] text-center w-full overflow-hidden mx-auto engraved-text"
             >
-              Как играть?
+              {{'how_to_play.title' | translate}}
             </div>
             <div class ="toc p-1 max-h-[60vh] overflow-auto scrollbar-thin">
-              <p class="w-full settings__title font-bold p-1">Настройка игры</p>
-              <p class="w-full text-[#bbbbbb] p-1">В меню настроек вы можете установить параметры игрового поля: количество строк, столбцов и мин.</p>
-              <p class="w-full settings__title font-bold p-1">Основной игровой процесс</p>
-              <p class="w-full text-[#bbbbbb] p-1">Игра начинается с первого безопасного хода — он гарантированно не приведёт к взрыву.</p>
-              <p class="w-full settings__title font-bold p-1">Система обозначений</p>
-              <p class="w-full text-[#bbbbbb] p-1">Цифры в ячейках указывают количество мин в соседних клетках.</p>
-              <p class="w-full settings__title font-bold p-1">Управление</p>
-              <p class="w-full text-[#bbbbbb] p-1">Левая кнопка мыши (или простое касание) — открывает ячейку</p>
-              <p class="w-full text-[#bbbbbb] p-1">Правая кнопка мыши (или длительное касание) — устанавливает флаг на предполагаемую мину</p>
-              <p class="w-full settings__title font-bold p-1">Дополнительные функции</p>
-              <p class="w-full text-[#bbbbbb] p-1">Кнопка помощи — автоматически открывает безопасную ячейку с миной (если она ещё не открыта и не помечена флагом)</p>
-              <p class="w-full text-[#bbbbbb] p-1">Набор для обезвреживания — активирует специальный режим. При открытии мины взрыв не происходит. Вместо этого появляется окно с выбором провода для обезвреживания. Вероятность успешного разминирования — 50%.</p>
-              <p class="w-full settings__title font-bold p-1">Желаем вам увлекательной игры и удачи в поиске мин!</p>
+              <p class="w-full settings__title font-bold p-1">{{'how_to_play.game_settings' | translate}}</p>
+              <p class="w-full text-[#bbbbbb] p-1">{{'how_to_play.game_settings_desc' | translate}}</p>
+              <p class="w-full settings__title font-bold p-1">{{'how_to_play.gameplay' | translate}}</p>
+              <p class="w-full text-[#bbbbbb] p-1">{{'how_to_play.gameplay_desc' | translate}}</p>
+              <p class="w-full settings__title font-bold p-1">{{'how_to_play.system' | translate}}</p>
+              <p class="w-full text-[#bbbbbb] p-1">{{'how_to_play.system_desc' | translate}}</p>
+              <p class="w-full settings__title font-bold p-1">{{'how_to_play.controls' | translate}}</p>
+              <p class="w-full text-[#bbbbbb] p-1">{{'how_to_play.controls_desc_1' | translate}}</p>
+              <p class="w-full text-[#bbbbbb] p-1">{{'how_to_play.controls_desc_2' | translate}}</p>
+              <p class="w-full settings__title font-bold p-1">{{'how_to_play.additional_functions' | translate}}</p>
+              <p class="w-full text-[#bbbbbb] p-1">{{'how_to_play.additional_functions_button_1' | translate}}</p>
+              <p class="w-full text-[#bbbbbb] p-1">{{'how_to_play.additional_functions_button_2' | translate}}</p>
+              <p class="w-full settings__title font-bold p-1">{{'how_to_play.good_luck' | translate}}</p>
             </div>
             
           </div>
@@ -251,8 +232,8 @@
             (upClickOutside)="gameService.newGame()"
           >
             <img src="./assets/images/2336769_b9413.gif" alt="win" class="h-7.5 w-7.5 mr-2" preload />
-            <span>Победа!</span>
-            <span>Все мины найдены.</span>
+            <span>{{'common.game_win' | translate}}</span>
+            <span>{{'common.game_win_result' | translate}}</span>
           </div>
         </div>
       }
@@ -264,8 +245,8 @@
             (upClickOutside)="gameService.newGame()"
           >
             <img src="./assets/images/boom-cat.gif" alt="lose" class="h-7.5 w-7.5 mr-2" preload />
-            <span>Поражение.</span>
-            <span>Вы подорвались на мине.</span>
+            <span>{{'common.game_loss' | translate}}</span>
+            <span>{{'common.game_loss_result' | translate}}</span>
           </div>
         </div>
       }
@@ -278,26 +259,31 @@
           class="settings toc p-4 max-h-[80vh] overflow-auto scrollbar-thin animate-bounce-in"
           (upClickOutside)="gameService.isGameStatsOpen() ? gameService.closeGameStats() : undefined"
         >
-          <table style="border-collapse: collapse; width: 100%; text-align: left;">
+          <div 
+            class="toc px-3 text-[2rem] text-center w-full overflow-hidden mx-auto engraved-text"
+          >
+            {{"statistic.title" | translate}}
+          </div>
+          <table style="border-collapse: collapse; width: 100%; text-align: left;" class="toc">
             <thead>
-              <tr >
-                <th class="text-[#bbbbbb] p-2">Время</th>
-                <th class="text-[#bbbbbb] p-2">Колонок</th>
-                <th class="text-[#bbbbbb] p-2">Рядов</th>
-                <th class="text-[#bbbbbb] p-2">Мин</th>
-                <th class="text-[#bbbbbb] p-2">Шагов</th>
-                <th class="text-[#bbbbbb] p-2">Результат</th>
+              <tr>
+                <th class="text-[#bbbbbb] pl-3 pt-3">{{"statistic.time" | translate }}</th>
+                <th class="text-[#bbbbbb] pl-3 pt-3">{{"statistic.cols" | translate }}</th>
+                <th class="text-[#bbbbbb] pl-3 pt-3">{{"statistic.rows" | translate }}</th>
+                <th class="text-[#bbbbbb] pl-3 pt-3">{{"statistic.mines" | translate }}</th>
+                <th class="text-[#bbbbbb] pl-3 pt-3">{{"statistic.moves" | translate }}</th>
+                <th class="text-[#bbbbbb] px-3 pt-3">{{"statistic.result" | translate }}</th>
               </tr>
             </thead>
             <tbody>
               @for (item of gameStats; track item.id) {
-                <tr>
-                  <td class="text-[#bbbbbb]">{{item.durationFormatted}}</td>
-                  <td class="text-[#bbbbbb]">{{item.cols}}</td>
-                  <td class="text-[#bbbbbb]">{{item.rows}}</td>
-                  <td class="text-[#bbbbbb]">{{item.mines}}</td>
-                  <td class="text-[#bbbbbb]">{{item.moves}}</td>
-                  <td class="text-[#bbbbbb] {{item.result === 'loss' ? 'status--lost' : 'status--won'}}">{{item.result === 'loss' ? 'Поражение' : 'Победа'}}</td>
+                <tr class="group">
+                  <td class="text-[#bbbbbb] pl-3 group-last:pb-3">{{item.durationFormatted}}</td>
+                  <td class="text-[#bbbbbb] pl-3 group-last:pb-3">{{item.cols}}</td>
+                  <td class="text-[#bbbbbb] pl-3 group-last:pb-3">{{item.rows}}</td>
+                  <td class="text-[#bbbbbb] pl-3 group-last:pb-3">{{item.mines}}</td>
+                  <td class="text-[#bbbbbb] pl-3 group-last:pb-3">{{item.moves}}</td>
+                  <td class="text-[#bbbbbb] {{item.result === 'loss' ? 'status--lost' : 'status--won'}} px-3 group-last:pb-3">{{(item.result === 'loss' ? 'statistic.result_loss' : 'statistic.result_win') | translate}}</td>
                 </tr>
               }
             </tbody>
