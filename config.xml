@@ -9,7 +9,9 @@
     </author>
     <platform name="android">
         <preference name="AutoHideSplashScreen" value="true" />
-        <preference name="SplashScreenDelay" value="300" />
+        <preference name="SplashScreenDelay" value="1000" />
+        <preference name="FadeSplashScreen" value="true" />
+        <preference name="FadeSplashScreenDuration" value="300" />
         <preference name="AndroidWindowSplashScreenBackground" value="#2e2e2e" />
         <preference name="AndroidWindowSplashScreenAnimatedIcon" value="assets/images/cartoon-bomb.png" />
     </platform>

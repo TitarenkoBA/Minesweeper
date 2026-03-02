@@ -254,9 +254,9 @@
 
     @if (gameService.isGameStatsOpen()) {
       @let gameStats = gameService.gameStatsSignal();
-      <div class="absolute w-fit">
+      <div class="absolute max-w-[90vw] lg:max-w-fit">
         <div 
-          class="settings toc p-4 max-h-[80vh] overflow-auto scrollbar-thin animate-bounce-in"
+          class="settings toc p-4  animate-bounce-in"
           (upClickOutside)="gameService.isGameStatsOpen() ? gameService.closeGameStats() : undefined"
         >
           <div 
@@ -264,30 +264,32 @@
           >
             {{"statistic.title" | translate}}
           </div>
-          <table style="border-collapse: collapse; width: 100%; text-align: left;" class="toc">
-            <thead>
-              <tr>
-                <th class="text-[#bbbbbb] pl-3 pt-3">{{"statistic.time" | translate }}</th>
-                <th class="text-[#bbbbbb] pl-3 pt-3">{{"statistic.cols" | translate }}</th>
-                <th class="text-[#bbbbbb] pl-3 pt-3">{{"statistic.rows" | translate }}</th>
-                <th class="text-[#bbbbbb] pl-3 pt-3">{{"statistic.mines" | translate }}</th>
-                <th class="text-[#bbbbbb] pl-3 pt-3">{{"statistic.moves" | translate }}</th>
-                <th class="text-[#bbbbbb] px-3 pt-3">{{"statistic.result" | translate }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (item of gameStats; track item.id) {
-                <tr class="group">
-                  <td class="text-[#bbbbbb] pl-3 group-last:pb-3">{{item.durationFormatted}}</td>
-                  <td class="text-[#bbbbbb] pl-3 group-last:pb-3">{{item.cols}}</td>
-                  <td class="text-[#bbbbbb] pl-3 group-last:pb-3">{{item.rows}}</td>
-                  <td class="text-[#bbbbbb] pl-3 group-last:pb-3">{{item.mines}}</td>
-                  <td class="text-[#bbbbbb] pl-3 group-last:pb-3">{{item.moves}}</td>
-                  <td class="text-[#bbbbbb] {{item.result === 'loss' ? 'status--lost' : 'status--won'}} px-3 group-last:pb-3">{{(item.result === 'loss' ? 'statistic.result_loss' : 'statistic.result_win') | translate}}</td>
+          <div class="toc max-h-[60vh] overflow-auto scrollbar-thin">
+            <table style="border-collapse: collapse; width: 100%; text-align: left;">
+              <thead>
+                <tr>
+                  <th class="text-[#bbbbbb] pl-3 pt-3">{{"statistic.time" | translate }}</th>
+                  <th class="text-[#bbbbbb] pl-3 pt-3">{{"statistic.cols" | translate }}</th>
+                  <th class="text-[#bbbbbb] pl-3 pt-3">{{"statistic.rows" | translate }}</th>
+                  <th class="text-[#bbbbbb] pl-3 pt-3">{{"statistic.mines" | translate }}</th>
+                  <th class="text-[#bbbbbb] pl-3 pt-3">{{"statistic.moves" | translate }}</th>
+                  <th class="text-[#bbbbbb] px-3 pt-3">{{"statistic.result" | translate }}</th>
                 </tr>
-              }
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                @for (item of gameStats; track item.id) {
+                  <tr class="group">
+                    <td class="text-[#bbbbbb] pl-3 group-last:pb-3">{{item.durationFormatted}}</td>
+                    <td class="text-[#bbbbbb] pl-3 group-last:pb-3">{{item.cols}}</td>
+                    <td class="text-[#bbbbbb] pl-3 group-last:pb-3">{{item.rows}}</td>
+                    <td class="text-[#bbbbbb] pl-3 group-last:pb-3">{{item.mines}}</td>
+                    <td class="text-[#bbbbbb] pl-3 group-last:pb-3">{{item.moves}}</td>
+                    <td class="text-[#bbbbbb] {{item.result === 'loss' ? 'status--lost' : 'status--won'}} px-3 group-last:pb-3">{{(item.result === 'loss' ? 'statistic.result_loss' : 'statistic.result_win') | translate}}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     }

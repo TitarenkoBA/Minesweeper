@@ -23,7 +23,7 @@
     "radio.music_volume": "Music volume",
     "how_to_play.title": "How to play?",
     "how_to_play.game_settings": "Game settings",
-    "how_to_play.game_settings_desc": "In the settings menu you can set the parameters of the playing field: the number of rows, columns and minbs, and also change the language",
+    "how_to_play.game_settings_desc": "In the settings menu you can set the parameters of the playing field: the number of rows, columns and mines, and also change the language",
     "how_to_play.gameplay": "Gameplay",
     "how_to_play.gameplay_desc": "The game starts with the first safe move - it is guaranteed not to lead to an explosion.",
     "how_to_play.system": "Notation system",
