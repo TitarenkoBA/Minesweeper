@@ -1,0 +1,34 @@
+@if (pwaInstallService.isPopupOpen()) {
+  <div class="absolute lg:w-[20rem] w-full">
+    <div
+      class="settings toc flex flex-col items-center p-4 animate-bounce-in"
+      (upClickOutside)="pwaInstallService.dismiss()"
+    >
+      <div
+        class="toc px-3 text-[2rem] text-center w-full overflow-hidden mx-auto engraved-text"
+      >
+        {{ 'pwa.title' | translate }}
+      </div>
+      <img src="./web-app-manifest-192x192.png" alt="minesweeper" class="w-[4rem] h-[4rem] rounded-xl" />
+      <h3 class="settings__title inner-light-shadow text-center">
+        {{ (pwaInstallService.isIosInstallable() ? 'pwa.description_ios' : 'pwa.description') | translate }}
+      </h3>
+      <div class="flex gap-4 mt-5">
+        @if (!pwaInstallService.isIosInstallable()) {
+          <button
+            class="control-button toc mx-auto status--won"
+            (click)="pwaInstallService.install()"
+          >
+            {{ 'pwa.install' | translate }}
+          </button>
+        }
+        <button
+          class="control-button toc mx-auto text-[#bbbbbb]"
+          (click)="pwaInstallService.dismiss()"
+        >
+          {{ 'pwa.later' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

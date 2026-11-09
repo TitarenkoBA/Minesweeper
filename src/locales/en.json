@@ -59,5 +59,10 @@
     "defuse.title": "Defuse",
     "defuse.description": "Select the wire you want to cut to defuse the bomb",
     "defuse.red": "Red",
-    "defuse.blue": "Blue"
+    "defuse.blue": "Blue",
+    "pwa.title": "Install app",
+    "pwa.description": "Install Minesweeper on your device to play offline and launch it from the home screen",
+    "pwa.description_ios": "To install the app, tap the \"Share\" button and choose \"Add to Home Screen\"",
+    "pwa.install": "Install",
+    "pwa.later": "Later"
 }

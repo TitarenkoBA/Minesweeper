@@ -225,6 +225,8 @@
         </div>
       }
 
+      <pwa-install-popup class="contents" />
+
       @if (gameService.gameWon()) {
         <div class="absolute lg:w-[20rem] w-full {{gameService.gameWon() ? '' : 'hidden'}}">
           <div 

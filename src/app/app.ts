@@ -9,10 +9,11 @@ import { RadioService } from '@shared/services/radio.service';
 import { CustomTooltipDirect } from '@shared/directives/tooltip.directive';
 import { Loader } from '@shared/ui/loader/loader';
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
+import { PwaInstallPopup } from '@shared/ui/pwa-install-popup/pwa-install-popup';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, BoardComponent, SidebarComponent, ClickOutside, CustomTooltipDirect, Loader, TranslatePipe],
+  imports: [RouterOutlet, BoardComponent, SidebarComponent, ClickOutside, CustomTooltipDirect, Loader, TranslatePipe, PwaInstallPopup],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
@@ -20,11 +21,6 @@ export class App implements OnDestroy {
   public readonly gameService = inject(GameService);
   public readonly soundService = inject(SoundService);
   public readonly radioService = inject(RadioService);
-
-  constructor() {
-    this.gameService.loadStats();
-    this.gameService.newGame();
-  }
 
   ngOnDestroy(): void {
     this.gameService.stopTimer();
