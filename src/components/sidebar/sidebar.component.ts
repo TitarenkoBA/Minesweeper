@@ -1,17 +1,10 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { GameService } from '@shared/services/game.service';
 import { RadioService } from '@shared/services/radio.service';
 import { SoundService } from '@shared/services/sound.service';
 import { CustomTooltipDirect } from '@shared/directives/tooltip.directive';
 import { TranslatePipe } from '@shared/pipes/translate.pipe';
-
-export interface GameSettings {
-  rows: number;
-  cols: number;
-  mines: number;
-  volume: number;
-  musicVolume: number;
-}
+import { formatDuration } from '@shared/helpers';
 
 @Component({
   selector: 'mines-sidebar',
@@ -44,13 +37,7 @@ export class SidebarComponent {
     }
   }
   get formattedDuration(): string {
-    const minutes = Math.floor(this.gameService.gameDurationSeconds() / 60);
-    const seconds = this.gameService.gameDurationSeconds() % 60;
-
-    const m = minutes.toString().padStart(2, '0');
-    const s = seconds.toString().padStart(2, '0');
-
-    return `${m}:${s}`;
+    return formatDuration(this.gameService.gameDurationSeconds());
   }
 }
 

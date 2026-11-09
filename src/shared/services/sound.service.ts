@@ -1,4 +1,5 @@
 import { Injectable, Signal, signal } from '@angular/core';
+import { SOUNDS_DIR } from '@shared/constants/sounds';
 
 @Injectable({
   providedIn: 'root',
@@ -60,14 +61,8 @@ export class SoundService {
   public setVolumeAllSounds(newVolume: number, isMusicSoundChange = false): void {
     this.activeAudioObjects.forEach((audio) => {
       try {
-        if (isMusicSoundChange) {
-          if (!audio.src.startsWith('/assets')) {
-            audio.volume = newVolume;
-          }
-        } else {
-          if (audio.src.startsWith('/assets')) {
-            audio.volume = newVolume;
-          }
+        if (this.isEffectSound(audio) !== isMusicSoundChange) {
+          audio.volume = newVolume;
         }
       } catch {
         // nothing
@@ -220,6 +215,11 @@ export class SoundService {
     } catch (error) {
       console.warn('Ошибка при создании аудио объекта:', error);
     }
+  }
+
+  // audio.src is always resolved to absolute url, so compare by resolved sounds dir
+  private isEffectSound(audio: HTMLAudioElement): boolean {
+    return audio.src.startsWith(new URL(SOUNDS_DIR, document.baseURI).href);
   }
 
   private handlePlayError(error: unknown, audio: HTMLAudioElement, cleanup: () => void): void {

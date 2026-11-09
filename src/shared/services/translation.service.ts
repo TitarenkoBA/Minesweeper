@@ -1,11 +1,7 @@
-import { filter } from 'rxjs/operators';
-
 import { inject, Injectable, signal } from '@angular/core';
-import { NavigationEnd,Router } from '@angular/router';
 
 import enTranslations from '../../locales/en.json';
 import ruTranslations from '../../locales/ru.json';
-import { syncWithLocalStorage } from '@shared/helpers';
 import { GameService } from './game.service';
 
 const SUPPORTED_LOCALES = [

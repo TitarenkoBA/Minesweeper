@@ -1,9 +1,10 @@
 import { Injectable, signal, inject, computed } from '@angular/core';
 import { SoundService } from './sound.service';
 import { Cell } from 'src/models/cell.model';
-import { syncWithLocalStorage, uniqId } from '@shared/helpers';
+import { formatDuration, syncWithLocalStorage, uniqId } from '@shared/helpers';
 import { GameResultType, GameStatsEntry } from 'src/models/game-stats.model';
-import { GameSettings } from 'src/components/sidebar/sidebar.component';
+import { GameSettings } from 'src/models/game-settings.model';
+import { SOUNDS } from '@shared/constants/sounds';
 import { SupportedLocale } from './translation.service';
 import { MediaQueryStore } from '@shared/stores/media-query-store';
 
@@ -95,11 +96,7 @@ export class GameService {
   }
 
   toggleSettings(): void {
-    if (this.isSettingsOpen()) {
-      this.isSettingsOpen.set(false)
-    } else {
-      this.isSettingsOpen.set(true)
-    }
+    this.isSettingsOpen.update((isOpen) => !isOpen);
   }
   openSettings(): void {
     if (!this.isSettingsOpen()) {
@@ -132,18 +129,10 @@ export class GameService {
     }
   }
   toggleLanguage(): void {
-    if (this.currentLocale() === 'ru') {
-      this.currentLocale.set('en');
-    } else {
-      this.currentLocale.set('ru');
-    }
+    this.currentLocale.update((locale) => (locale === 'ru' ? 'en' : 'ru'));
   }
   toggleDefuseActive(): void {
-    if (this.isDefuseActive()) {
-      this.isDefuseActive.set(false)
-    } else {
-      this.isDefuseActive.set(true)
-    }
+    this.isDefuseActive.update((isActive) => !isActive);
   }
   openDefuse(): void {
     if (!this.isDefuseOpen() && !this.isDefuseToolUsed()) {
@@ -156,12 +145,7 @@ export class GameService {
     }
   }
   onDefuseButtonClick(): void {
-    const chance = Math.floor(Math.random() * 2);
-    if (chance) {
-      this.isDefused.set(true)
-    } else {
-      this.isDefused.set(false)
-    }
+    this.isDefused.set(Math.random() < 0.5);
     const cell = this.defusingCell();
     this.isDefuseToolUsed.set(true);
     this.isDefuseActive.set(false);
@@ -172,7 +156,7 @@ export class GameService {
   }
   newGame(): void {
     this.gameID.set(null);
-    this.soundService.playSound('./assets/sounds/a9b9946fbabe4d0.mp3', this.volume());
+    this.soundService.playSound(SOUNDS.newGame, this.volume());
 
     this.moveCounter = 0;
     this.stopTimer();
@@ -245,9 +229,9 @@ export class GameService {
       (isDefusingCell && this.isDefused() && this.defusingCell()) ||
       (current.canBeDefused && !current.isDefused && !current.isFlagged && !this.isDefuseActive() && isHelpingCell)
     ) {
-      this.soundService.playSound('./assets/sounds/defuse-valorant.mp3', this.volume());
+      this.soundService.playSound(SOUNDS.defuse, this.volume());
     } else {
-      this.soundService.playSound('./assets/sounds/877427.mp3', this.volume());
+      this.soundService.playSound(SOUNDS.cellOpen, this.volume());
     }
     
     this.startTimer();
@@ -271,7 +255,7 @@ export class GameService {
         this.gameWon.set(true);
         this.recordGame('win', cells);
 
-        this.soundService.playSound('./assets/sounds/winn-cc.mp3', this.volume());
+        this.soundService.playSound(SOUNDS.win, this.volume());
       } else {
         return;
       }
@@ -290,7 +274,7 @@ export class GameService {
         this.gameWon.set(true);
         this.recordGame('win', cells);
 
-        this.soundService.playSound('./assets/sounds/winn-cc.mp3', this.volume());
+        this.soundService.playSound(SOUNDS.win, this.volume());
       } else {
         return;
       }
@@ -311,7 +295,7 @@ export class GameService {
       this.gameOver.set(true);
       this.recordGame('loss', cells);
 
-      this.soundService.playSound('./assets/sounds/1c7227d9b23f914.mp3', this.volume());
+      this.soundService.playSound(SOUNDS.explosion, this.volume());
       return;
     }
 
@@ -322,7 +306,7 @@ export class GameService {
       this.gameWon.set(true);
       this.recordGame('win', cells);
 
-      this.soundService.playSound('./assets/sounds/winn-cc.mp3', this.volume());
+      this.soundService.playSound(SOUNDS.win, this.volume());
     }
   }
 
@@ -341,7 +325,7 @@ export class GameService {
       return;
     }
 
-    this.soundService.playSound('./assets/sounds/mouth-pop-finger.mp3', this.volume());
+    this.soundService.playSound(SOUNDS.flag, this.volume());
 
     this.moveCounter += 1;
 
@@ -511,13 +495,7 @@ export class GameService {
 
     this.stopTimer();
 
-    const minutes = Math.floor(this.gameDurationSeconds() / 60);
-    const seconds = this.gameDurationSeconds() % 60;
-
-    const m = minutes.toString().padStart(2, '0');
-    const s = seconds.toString().padStart(2, '0');
-
-    const durationFormatted = `${m}:${s}`
+    const durationFormatted = formatDuration(this.gameDurationSeconds());
 
     const minePositions = cells
       .filter((c) => c.isMine)

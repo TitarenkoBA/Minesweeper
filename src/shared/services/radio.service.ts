@@ -1,9 +1,5 @@
 import { Injectable, signal, inject, computed } from '@angular/core';
 import { SoundService } from './sound.service';
-import { Cell } from 'src/models/cell.model';
-import { uniqId } from '@shared/helpers';
-import { GameResultType, GameStatsEntry } from 'src/models/game-stats.model';
-import { GameSettings } from 'src/components/sidebar/sidebar.component';
 import { GameService } from './game.service';
 
 @Injectable({
@@ -45,11 +41,7 @@ export class RadioService {
   public readonly isLastStation = computed(() => this.playedStation().index === this.stationList.length);
   public readonly isFirstStation = computed(() => this.playedStation().index === 1);
   toggleRadio(): void {
-    if (this.isRadioOpen()) {
-      this.isRadioOpen.set(false)
-    } else {
-      this.isRadioOpen.set(true)
-    }
+    this.isRadioOpen.update((isOpen) => !isOpen);
   }
   prevStation(): void {
     if (!this.isFirstStation()) {
